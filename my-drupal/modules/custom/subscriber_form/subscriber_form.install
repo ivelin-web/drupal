@@ -1,0 +1,62 @@
+<?php
+
+use Drupal\user\Entity\User;
+
+/**
+ * Update all users greetings field
+ */
+function subscriber_form_update_9003(&$sandbox)
+{
+    // With Batch
+    if (!isset($sandbox['total'])) {
+        $uidsCount = Drupal::entityQuery('user')
+            ->count()
+            ->execute();
+
+        $sandbox['total'] = $uidsCount;
+        $sandbox['current'] = 0;
+
+        if (empty($sandbox['total'])) {
+            $sandbox['#finished'] = 1;
+            return;
+        }
+    }
+
+    $users_per_batch = 2;
+    $uids = Drupal::entityQuery('user')
+        ->range($sandbox['current'], $users_per_batch)
+        ->execute();
+
+    if (empty($uids)) {
+        $sandbox['#finished'] = 1;
+        return;
+    }
+
+    foreach ($uids as $uid) {
+        $user = User::load($uid);
+
+        $newValue = $user->id() % 2 === 0 ? 'Hi!' : 'Hello!';
+
+        $user->set('field_greetings', $newValue);
+        $user->save();
+
+        $sandbox['current']++;
+    }
+
+    $sandbox['#finished'] = $sandbox['current'] >= $sandbox['total']
+        ? 1
+        : $sandbox['current'] / $sandbox['total'];
+
+
+      // Without Batch
+//    // Get all users
+//    $users = User::loadMultiple();
+//
+//    // Set new value to greetings field
+//    foreach ($users as $user) {
+//        $newValue = $user->id() % 2 == 0 ? 'Hi!' : 'Hello!';
+//
+//        $user->set('field_greetings', $newValue);
+//        $user->save();
+//    }
+}

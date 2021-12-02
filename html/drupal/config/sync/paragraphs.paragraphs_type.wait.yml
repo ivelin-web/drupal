@@ -1,0 +1,12 @@
+uuid: 25dd337c-965b-46d2-8555-f46ff68e6eca
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:c3643e80-1b61-4468-a73f-41caf0f0e1b0'
+id: wait
+label: Wait
+icon_uuid: c3643e80-1b61-4468-a73f-41caf0f0e1b0
+icon_default: null
+description: 'Write human readable time for "how much time to wait before next action".'
+behavior_plugins: {  }

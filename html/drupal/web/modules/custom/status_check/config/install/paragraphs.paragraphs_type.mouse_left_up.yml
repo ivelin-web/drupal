@@ -1,0 +1,11 @@
+uuid: cc0356f0-a889-4a8a-8eed-d753dc6d59ac
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:e7822367-d5d0-4d60-9e43-0002dc7083b9'
+id: mouse_left_up
+label: 'Mouse Left Up'
+icon_uuid: e7822367-d5d0-4d60-9e43-0002dc7083b9
+description: 'Release the pressed left button on the mouse.'
+behavior_plugins: {  }

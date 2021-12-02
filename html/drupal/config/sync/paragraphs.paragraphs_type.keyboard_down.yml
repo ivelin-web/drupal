@@ -1,0 +1,12 @@
+uuid: bdd8b173-7a7a-491e-9486-20c4e76ca879
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:048ccc3c-f88e-4aa0-a100-84c2bb8cb081'
+id: keyboard_down
+label: 'Keyboard Down'
+icon_uuid: 048ccc3c-f88e-4aa0-a100-84c2bb8cb081
+icon_default: null
+description: 'Hold down some button.'
+behavior_plugins: {  }

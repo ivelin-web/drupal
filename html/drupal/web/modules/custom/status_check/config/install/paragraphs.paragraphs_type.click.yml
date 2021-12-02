@@ -1,0 +1,11 @@
+uuid: a9692fb1-7845-4a0c-a9f4-5c205303351d
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:c88d809d-9ccb-4f6d-b69d-71795a42a48a'
+id: click
+label: Click
+icon_uuid: c88d809d-9ccb-4f6d-b69d-71795a42a48a
+description: 'Make a click.'
+behavior_plugins: {  }

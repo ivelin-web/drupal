@@ -1,0 +1,23 @@
+uuid: f7472528-9b98-467e-b7cb-2f8932dec553
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.response_status_text.field_text
+    - paragraphs.paragraphs_type.response_status_text
+id: paragraph.response_status_text.default
+targetEntityType: paragraph
+bundle: response_status_text
+mode: default
+content:
+  field_text:
+    weight: 0
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+hidden:
+  created: true
+  status: true

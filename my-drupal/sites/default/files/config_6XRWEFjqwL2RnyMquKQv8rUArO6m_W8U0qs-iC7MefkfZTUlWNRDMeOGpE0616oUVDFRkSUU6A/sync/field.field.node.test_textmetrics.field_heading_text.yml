@@ -1,0 +1,21 @@
+uuid: c6d41f7e-a6b8-449a-954d-7930bc110b59
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_heading_text
+    - node.type.test_textmetrics
+  module:
+    - text
+id: node.test_textmetrics.field_heading_text
+field_name: field_heading_text
+entity_type: node
+bundle: test_textmetrics
+label: 'Heading Text'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text

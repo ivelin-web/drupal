@@ -1,0 +1,19 @@
+uuid: 6a59d84a-bb75-4de1-8393-46096a47f639
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_element
+    - paragraphs.paragraphs_type.find
+id: paragraph.find.field_element
+field_name: field_element
+entity_type: paragraph
+bundle: find
+label: Element
+description: 'Find element by query selector.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

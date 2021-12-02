@@ -1,0 +1,22 @@
+uuid: 3043221d-2cbe-414e-bc86-6bebfd5b7b3b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.response_status_code.field_code
+    - paragraphs.paragraphs_type.response_status_code
+id: paragraph.response_status_code.default
+targetEntityType: paragraph
+bundle: response_status_code
+mode: default
+content:
+  field_code:
+    weight: 0
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+hidden: {  }

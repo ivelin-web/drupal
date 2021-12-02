@@ -1,0 +1,52 @@
+uuid: 2b30033b-0d06-48a3-b02d-c91615685acc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.test_textmetrics.body
+    - field.field.node.test_textmetrics.field_heading_text
+    - field.field.node.test_textmetrics.field_long_text
+    - field.field.node.test_textmetrics.field_text
+    - node.type.test_textmetrics
+  module:
+    - text
+    - user
+id: node.test_textmetrics.default
+targetEntityType: node
+bundle: test_textmetrics
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_heading_text:
+    weight: 104
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_long_text:
+    weight: 103
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_text:
+    weight: 102
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden: {  }

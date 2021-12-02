@@ -1,0 +1,10 @@
+name: 'Status Check'
+type: module
+description: 'Asserting different urls with different checks.'
+core: 8.x
+
+dependencies:
+  - node
+  - paragraphs
+  - path_alias
+  - entity_reference_revisions

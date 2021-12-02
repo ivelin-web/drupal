@@ -1,0 +1,12 @@
+uuid: 77f15962-76a0-4405-9c50-7acd7cc2f87b
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:0a69c58a-6282-4681-8415-d4b71f58ad7d'
+id: mouse_right_up
+label: 'Mouse Right Up'
+icon_uuid: 0a69c58a-6282-4681-8415-d4b71f58ad7d
+icon_default: null
+description: 'Release the pressed right button on the mouse.'
+behavior_plugins: {  }

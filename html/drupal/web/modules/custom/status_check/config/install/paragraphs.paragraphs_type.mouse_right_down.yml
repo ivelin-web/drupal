@@ -1,0 +1,11 @@
+uuid: 46a3a90b-ab56-4550-a6c7-5d53749f4ab1
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:37237719-301e-4f59-ba3c-25a609ce1125'
+id: mouse_right_down
+label: 'Mouse Right Down'
+icon_uuid: 37237719-301e-4f59-ba3c-25a609ce1125
+description: 'Hold down the right button on the mouse.'
+behavior_plugins: {  }

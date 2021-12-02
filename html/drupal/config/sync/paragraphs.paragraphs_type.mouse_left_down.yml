@@ -1,0 +1,12 @@
+uuid: 0d6df958-f256-4ff0-9f20-ea0b583c240f
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:c9413c31-60c7-4168-9cf2-95189540ce72'
+id: mouse_left_down
+label: 'Mouse Left Down'
+icon_uuid: c9413c31-60c7-4168-9cf2-95189540ce72
+icon_default: null
+description: 'Hold down the left button on the mouse.'
+behavior_plugins: {  }

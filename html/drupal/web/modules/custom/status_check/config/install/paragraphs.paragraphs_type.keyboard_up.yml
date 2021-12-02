@@ -1,0 +1,11 @@
+uuid: eaf64929-6de6-427c-8fff-4237bd464dc6
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:4245dbd8-2334-44b1-8beb-777fd0b980ee'
+id: keyboard_up
+label: 'Keyboard Up'
+icon_uuid: 4245dbd8-2334-44b1-8beb-777fd0b980ee
+description: 'Release some pressed button.'
+behavior_plugins: {  }

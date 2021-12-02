@@ -1,0 +1,59 @@
+status_check.projects:
+  path: '/api/projects'
+  defaults:
+    _controller: '\Drupal\status_check\Controller\StatusCheckController::projects'
+    _title: ''
+  methods: [GET]
+  requirements:
+    _custom_access: '\Drupal\status_check\Services\Auth::checkAccess'
+    _format: 'json'
+
+status_check.projects.where:
+  path: '/api/projects/where'
+  defaults:
+    _controller: '\Drupal\status_check\Controller\StatusCheckController::projectsWhere'
+    _title: ''
+  methods: [GET]
+  requirements:
+    _custom_access: '\Drupal\status_check\Services\Auth::checkAccess'
+    _format: 'json'
+
+status_check.login:
+  path: '/api/user/login'
+  defaults:
+    _controller: '\Drupal\status_check\Controller\StatusCheckController::login'
+    _title: ''
+  methods: [POST]
+  requirements:
+    _custom_access: '\Drupal\status_check\Services\Auth::guestOnly'
+    _format: 'json'
+
+status_check.register:
+  path: '/api/user/register'
+  defaults:
+    _controller: '\Drupal\status_check\Controller\StatusCheckController::register'
+    _title: ''
+  methods: [POST]
+  requirements:
+    _custom_access: '\Drupal\status_check\Services\Auth::guestOnly'
+    _format: 'json'
+
+status_check.settings.show:
+  path: '/api/user/settings'
+  defaults:
+    _controller: '\Drupal\status_check\Controller\StatusCheckController::getSettings'
+    _title: ''
+  methods: [GET]
+  requirements:
+    _custom_access: '\Drupal\status_check\Services\Auth::checkAccess'
+    _format: 'json'
+
+status_check.settings.store:
+  path: '/api/user/settings'
+  defaults:
+    _controller: '\Drupal\status_check\Controller\StatusCheckController::setSettings'
+    _title: ''
+  methods: [POST]
+  requirements:
+    _custom_access: '\Drupal\status_check\Services\Auth::checkAccess'
+    _format: 'json'

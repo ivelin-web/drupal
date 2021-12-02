@@ -1,0 +1,20 @@
+uuid: 747c147a-1d40-43d8-937b-55e2420f5776
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_settings
+  module:
+    - user
+id: user.user.field_settings
+field_name: field_settings
+entity_type: user
+bundle: user
+label: Settings
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

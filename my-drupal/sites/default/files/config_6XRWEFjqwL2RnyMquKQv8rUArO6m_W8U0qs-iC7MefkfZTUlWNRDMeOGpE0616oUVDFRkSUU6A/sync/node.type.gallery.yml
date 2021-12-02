@@ -1,0 +1,17 @@
+uuid: d7171b9c-8041-47df-962d-eed54b9806b6
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: Gallery
+type: gallery
+description: 'Add image to gallery'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false

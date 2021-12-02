@@ -1,0 +1,11 @@
+uuid: 309bdaaa-a301-4533-8088-8534d0989042
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:7661b984-7614-4ef2-ba6e-85edb59554f4'
+id: mouse_move
+label: 'Mouse Move'
+icon_uuid: 7661b984-7614-4ef2-ba6e-85edb59554f4
+description: 'Provide "x" and "y" coordinates for the mouse to move.'
+behavior_plugins: {  }

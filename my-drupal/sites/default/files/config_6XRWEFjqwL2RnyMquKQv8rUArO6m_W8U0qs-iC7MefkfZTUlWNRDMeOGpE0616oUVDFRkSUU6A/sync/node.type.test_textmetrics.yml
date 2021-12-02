@@ -1,0 +1,18 @@
+uuid: eaaf814c-d7b7-4970-89d5-f47c59b09e85
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+name: 'Test textmetrics'
+type: test_textmetrics
+description: 'testing textmetrics'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: true

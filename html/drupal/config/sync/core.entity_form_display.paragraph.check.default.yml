@@ -1,0 +1,65 @@
+uuid: 086db91b-7753-42ea-ad12-ae81ec7dbdb9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.check.field_actions
+    - field.field.paragraph.check.field_assertions
+    - field.field.paragraph.check.field_name
+    - paragraphs.paragraphs_type.check
+  module:
+    - status_check
+id: paragraph.check.default
+targetEntityType: paragraph
+bundle: check
+mode: default
+content:
+  field_actions:
+    type: paragraphs2
+    weight: 1
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: '0'
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: _none
+      features:
+        duplicate: duplicate
+        collapse_edit_all: collapse_edit_all
+        add_above: 0
+    third_party_settings: {  }
+    region: content
+  field_assertions:
+    type: paragraphs2
+    weight: 2
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: '0'
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: _none
+      features:
+        duplicate: duplicate
+        collapse_edit_all: collapse_edit_all
+        add_above: 0
+    third_party_settings: {  }
+    region: content
+  field_name:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true

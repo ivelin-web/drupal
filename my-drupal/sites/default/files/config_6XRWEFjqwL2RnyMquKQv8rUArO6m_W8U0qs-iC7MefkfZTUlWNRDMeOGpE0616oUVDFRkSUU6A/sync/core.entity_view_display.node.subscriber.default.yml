@@ -1,0 +1,52 @@
+uuid: e428fa59-2919-458a-907e-ba01b3bb80b9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.subscriber.field_first_name
+    - field.field.node.subscriber.field_last_name
+    - field.field.node.subscriber.field_short_description
+    - field.field.node.subscriber.field_subsriber_email
+    - node.type.subscriber
+  module:
+    - text
+    - user
+id: node.subscriber.default
+targetEntityType: node
+bundle: subscriber
+mode: default
+content:
+  field_first_name:
+    weight: 104
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_last_name:
+    weight: 105
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_short_description:
+    weight: 103
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_subsriber_email:
+    weight: 102
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  links:
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

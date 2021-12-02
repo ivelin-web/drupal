@@ -1,0 +1,23 @@
+uuid: 1564ef4f-ba0e-47de-82d3-40e5a0073c4e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_x
+    - paragraphs.paragraphs_type.mouse_move
+id: paragraph.mouse_move.field_x
+field_name: field_x
+entity_type: paragraph
+bundle: mouse_move
+label: X
+description: 'Provide "x" coordinates for the mouse to move. If "x" = 100, mouse will move 100px from left to right.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

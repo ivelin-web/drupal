@@ -1,0 +1,21 @@
+uuid: d3fd6009-43f5-4314-a3f5-e1bc4be89866
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: read_only_paragraphs
+label: 'Read Only Paragraphs'
+code: ".field--type-boolean.field--name-field-on.field--widget-boolean-checkbox {\r\n  pointer-events: none;\r\n  display: none;\r\n}"
+conditions_require_all: true
+conditions:
+  node_type:
+    id: node_type
+    bundles:
+      project: project
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+contexts: {  }
+media: all
+preprocess: true

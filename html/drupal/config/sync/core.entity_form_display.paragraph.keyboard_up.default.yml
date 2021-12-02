@@ -1,0 +1,23 @@
+uuid: c24e52a5-e9a0-45f0-8624-7f00ffbe057e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.keyboard_up.field_button
+    - paragraphs.paragraphs_type.keyboard_up
+id: paragraph.keyboard_up.default
+targetEntityType: paragraph
+bundle: keyboard_up
+mode: default
+content:
+  field_button:
+    weight: 0
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+hidden:
+  created: true
+  status: true

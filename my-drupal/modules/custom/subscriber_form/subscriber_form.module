@@ -1,0 +1,87 @@
+<?php
+
+use Drupal\subscriber_form\Event\UserLoginEvent;
+use Drupal\user\Entity\User;
+
+function subscriber_form_mail($key, &$message, $params)
+{
+    switch ($key) {
+        case 'subscriber_mail':
+            $body = t("{$params['first_name']} {$params['last_name']} is a new subscriber.<br />Short description of new subscriber: {$params['short_description']}");
+
+            $message['from'] = $params['from'];
+            $message['subject'] = $params['subject'];
+            $message['body'][] = $body;
+            break;
+    }
+}
+
+function subscriber_form_user_login($account)
+{
+    // Instantiate our event
+    $event = new UserLoginEvent($account);
+
+    // Get the event_dispatcher service and dispatch the event
+    /**
+     * @var \Symfony\Component\EventDispatcher\EventDispatcher $event_dispatcher
+     */
+    $event_dispatcher = Drupal::service('event_dispatcher');
+    $event_dispatcher->dispatch($event, UserLoginEvent::EVENT_NAME);
+}
+
+function subscriber_form_update_9004(&$sandbox)
+{
+  $debug = '';
+    // With Batch
+    if (!isset($sandbox['total'])) {
+        $uidsCount = Drupal::entityQuery('user')
+            ->count()
+            ->execute();
+
+        $sandbox['total'] = $uidsCount;
+        $sandbox['current'] = 0;
+
+        if (empty($sandbox['total'])) {
+            $sandbox['#finished'] = 1;
+            return;
+        }
+    }
+
+    $users_per_batch = 2;
+    $uids = Drupal::entityQuery('user')
+        ->range($sandbox['current'], $users_per_batch)
+        ->execute();
+
+    if (empty($uids)) {
+        $sandbox['#finished'] = 1;
+        return;
+    }
+
+    foreach ($uids as $uid) {
+        $user = User::load($uid);
+
+        $newValue = $user->id() % 2 === 0 ? 'Hi!' : 'Hello!';
+
+        $user->set('field_greetings', $newValue);
+        $user->save();
+
+        $sandbox['current']++;
+    }
+
+    $sandbox['#finished'] = $sandbox['current'] >= $sandbox['total']
+        ? 1
+        : $sandbox['current'] / $sandbox['total'];
+
+
+    // Without Batch
+//    // Get all users
+//    $users = User::loadMultiple();
+//
+//    // Set new value to greetings field
+//    foreach ($users as $user) {
+//        $newValue = $user->id() % 2 == 0 ? 'Hi!' : 'Hello!';
+//
+//        $user->set('field_greetings', $newValue);
+//        $user->save();
+//    }
+}

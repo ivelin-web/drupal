@@ -1,0 +1,19 @@
+uuid: c856e1d7-b825-49b4-87c2-608b72328a2b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_text
+    - paragraphs.paragraphs_type.text_exist
+id: paragraph.text_exist.field_text
+field_name: field_text
+entity_type: paragraph
+bundle: text_exist
+label: Text
+description: 'Assert text exist.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

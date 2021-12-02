@@ -1,0 +1,22 @@
+uuid: dc3117e1-10f0-4dbc-9348-420435257c3a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.response_status_code.field_code
+    - paragraphs.paragraphs_type.response_status_code
+id: paragraph.response_status_code.default
+targetEntityType: paragraph
+bundle: response_status_code
+mode: default
+content:
+  field_code:
+    weight: 0
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+hidden:
+  created: true
+  status: true

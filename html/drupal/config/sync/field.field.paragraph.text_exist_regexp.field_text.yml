@@ -1,0 +1,19 @@
+uuid: f25e71a0-d0f6-4df1-84bb-0a168334e39b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_text
+    - paragraphs.paragraphs_type.text_exist_regexp
+id: paragraph.text_exist_regexp.field_text
+field_name: field_text
+entity_type: paragraph
+bundle: text_exist_regexp
+label: Text
+description: 'Assert text exist with regular expression.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

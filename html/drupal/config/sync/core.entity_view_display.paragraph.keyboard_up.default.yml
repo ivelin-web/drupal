@@ -1,0 +1,20 @@
+uuid: ab0cb1d7-5c47-4c7b-946d-cb021d63471e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.keyboard_up.field_button
+    - paragraphs.paragraphs_type.keyboard_up
+id: paragraph.keyboard_up.default
+targetEntityType: paragraph
+bundle: keyboard_up
+mode: default
+content:
+  field_button:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+hidden: {  }

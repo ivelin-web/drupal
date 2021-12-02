@@ -1,0 +1,12 @@
+uuid: 7bdf0ee2-0563-4b94-9c5b-30c438c66b43
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:dc41a493-47ed-4168-97c9-3ab5c30adead'
+id: find
+label: Find
+icon_uuid: dc41a493-47ed-4168-97c9-3ab5c30adead
+icon_default: null
+description: 'Find element by query selector.'
+behavior_plugins: {  }

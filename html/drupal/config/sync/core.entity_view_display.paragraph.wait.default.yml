@@ -1,0 +1,21 @@
+uuid: a205409d-e4da-401d-ab1d-9f96ca14a200
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.wait.field_time_for_humans
+    - paragraphs.paragraphs_type.wait
+id: paragraph.wait.default
+targetEntityType: paragraph
+bundle: wait
+mode: default
+content:
+  field_time_for_humans:
+    weight: 0
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden: {  }

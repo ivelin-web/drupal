@@ -1,0 +1,30 @@
+uuid: 933ac2a9-1a67-4a74-b801-e9243a40eb3c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.mouse_move.field_x
+    - field.field.paragraph.mouse_move.field_y
+    - paragraphs.paragraphs_type.mouse_move
+id: paragraph.mouse_move.default
+targetEntityType: paragraph
+bundle: mouse_move
+mode: default
+content:
+  field_x:
+    weight: 0
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_y:
+    weight: 1
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+hidden:
+  created: true
+  status: true

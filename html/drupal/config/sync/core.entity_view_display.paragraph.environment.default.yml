@@ -1,0 +1,33 @@
+uuid: e9927f24-ae96-49e3-b9b9-2020b4c89529
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.environment.field_checks
+    - field.field.paragraph.environment.field_name
+    - paragraphs.paragraphs_type.environment
+  module:
+    - entity_reference_revisions
+id: paragraph.environment.default
+targetEntityType: paragraph
+bundle: environment
+mode: default
+content:
+  field_checks:
+    type: entity_reference_revisions_entity_view
+    weight: 1
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  field_name:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden: {  }

@@ -1,0 +1,20 @@
+uuid: 12d2eb1f-2536-4948-b47c-61bbdac52b6c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.keyboard_type.field_text
+    - paragraphs.paragraphs_type.keyboard_type
+id: paragraph.keyboard_type.default
+targetEntityType: paragraph
+bundle: keyboard_type
+mode: default
+content:
+  field_text:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+hidden: {  }

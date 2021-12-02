@@ -1,0 +1,12 @@
+uuid: fd84b483-af9d-4405-9ebf-8e6aac0f3e58
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:c0d39629-8981-4c20-b7cf-994e079e8478'
+id: keyboard_type
+label: 'Keyboard Type'
+icon_uuid: c0d39629-8981-4c20-b7cf-994e079e8478
+icon_default: null
+description: 'Type the given text with the keyboard.'
+behavior_plugins: {  }

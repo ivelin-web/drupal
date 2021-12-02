@@ -1,0 +1,23 @@
+uuid: ace52e76-11d1-47ec-9262-889599d4ec65
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.go_to.field_text
+    - paragraphs.paragraphs_type.go_to
+id: paragraph.go_to.default
+targetEntityType: paragraph
+bundle: go_to
+mode: default
+content:
+  field_text:
+    weight: 0
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+hidden:
+  created: true
+  status: true

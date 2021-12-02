@@ -1,0 +1,140 @@
+uuid: 358e273b-2e91-4efc-8ada-ee4184a10d5e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_actions
+    - paragraphs.paragraphs_type.check
+    - paragraphs.paragraphs_type.click
+    - paragraphs.paragraphs_type.find
+    - paragraphs.paragraphs_type.find_and_type
+    - paragraphs.paragraphs_type.focus
+    - paragraphs.paragraphs_type.go_to
+    - paragraphs.paragraphs_type.keyboard_down
+    - paragraphs.paragraphs_type.keyboard_press
+    - paragraphs.paragraphs_type.keyboard_type
+    - paragraphs.paragraphs_type.keyboard_up
+    - paragraphs.paragraphs_type.mouse_left_click
+    - paragraphs.paragraphs_type.mouse_left_down
+    - paragraphs.paragraphs_type.mouse_left_up
+    - paragraphs.paragraphs_type.mouse_move
+    - paragraphs.paragraphs_type.mouse_right_click
+    - paragraphs.paragraphs_type.mouse_right_down
+    - paragraphs.paragraphs_type.mouse_right_up
+    - paragraphs.paragraphs_type.scroll_click
+    - paragraphs.paragraphs_type.wait
+  module:
+    - entity_reference_revisions
+id: paragraph.check.field_actions
+field_name: field_actions
+entity_type: paragraph
+bundle: check
+label: Actions
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      click: click
+      find_and_type: find_and_type
+      go_to: go_to
+      keyboard_down: keyboard_down
+      keyboard_press: keyboard_press
+      find: find
+      keyboard_type: keyboard_type
+      keyboard_up: keyboard_up
+      mouse_left_click: mouse_left_click
+      mouse_left_down: mouse_left_down
+      mouse_left_up: mouse_left_up
+      focus: focus
+      mouse_move: mouse_move
+      mouse_right_click: mouse_right_click
+      mouse_right_down: mouse_right_down
+      mouse_right_up: mouse_right_up
+      scroll_click: scroll_click
+      wait: wait
+    target_bundles_drag_drop:
+      check:
+        weight: 35
+        enabled: false
+      click:
+        enabled: true
+        weight: 28
+      element_exist:
+        weight: 38
+        enabled: false
+      environment:
+        weight: 37
+        enabled: false
+      find:
+        enabled: true
+        weight: 37
+      find_and_type:
+        enabled: true
+        weight: 32
+      focus:
+        enabled: true
+        weight: 42
+      go_to:
+        enabled: true
+        weight: 34
+      keyboard_down:
+        enabled: true
+        weight: 35
+      keyboard_press:
+        enabled: true
+        weight: 36
+      keyboard_type:
+        enabled: true
+        weight: 37
+      keyboard_up:
+        enabled: true
+        weight: 38
+      mouse_left_click:
+        enabled: true
+        weight: 39
+      mouse_left_down:
+        enabled: true
+        weight: 40
+      mouse_left_up:
+        enabled: true
+        weight: 41
+      mouse_move:
+        enabled: true
+        weight: 42
+      mouse_right_click:
+        enabled: true
+        weight: 43
+      mouse_right_down:
+        enabled: true
+        weight: 44
+      mouse_right_up:
+        enabled: true
+        weight: 45
+      response_status_code:
+        weight: 46
+        enabled: false
+      response_status_text:
+        weight: 47
+        enabled: false
+      scroll_click:
+        enabled: true
+        weight: 48
+      text_exist:
+        weight: 49
+        enabled: false
+      text_exist_regexp:
+        weight: 50
+        enabled: false
+      wait:
+        enabled: true
+        weight: 51
+      wait_action:
+        enabled: true
+        weight: 56
+field_type: entity_reference_revisions

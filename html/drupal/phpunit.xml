@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.1/phpunit.xsd"
+         backupGlobals="false"
+         colors="true"
+         bootstrap="web/core/tests/bootstrap.php"
+         verbose="true"
+         stopOnFailure="true"
+        >
+    <php>
+      <ini name="memory_limit" value="-1"/>
+      <env name="SIMPLETEST_BASE_URL" value="http://local.status-check-app"/>
+      <env name="SIMPLETEST_DB" value="sqlite://localhost/:memory:"/>
+      <env name="BROWSERTEST_OUTPUT_DIRECTORY" value="/var/www/status_check_app/drupal/simpletest"/>
+      <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak_vendors"/>
+    </php>
+    <testsuites>
+      <testsuite name="status_check">
+        <directory>./web/modules/custom/</directory>
+      </testsuite>
+    </testsuites>
+    <!--Uncomment next 5 lines to enable test coverage in phpstorm-->
+    <!--<filter>
+      <whitelist processUncoveredFilesFromWhitelist="true">
+        <directory suffix=".php">./web/modules/custom/modules/status_check/src</directory>
+      </whitelist>
+    </filter>-->
+</phpunit>

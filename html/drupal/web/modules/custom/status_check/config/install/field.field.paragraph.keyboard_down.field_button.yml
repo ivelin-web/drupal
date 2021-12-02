@@ -1,0 +1,19 @@
+uuid: 93843eb4-3e06-4735-9d61-dc51af7e4378
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_button
+    - paragraphs.paragraphs_type.keyboard_down
+id: paragraph.keyboard_down.field_button
+field_name: field_button
+entity_type: paragraph
+bundle: keyboard_down
+label: Button
+description: 'Hold down some button.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

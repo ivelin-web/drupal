@@ -1,0 +1,48 @@
+uuid: 9fda211e-08ce-40c6-b061-325dc9ee1567
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.project.field_environments
+    - node.type.project
+  module:
+    - paragraphs
+id: node.project.default
+targetEntityType: node
+bundle: project
+mode: default
+content:
+  field_environments:
+    type: paragraphs
+    weight: 1
+    settings:
+      title: ' Paragraph'
+      title_plural: ' Paragraphs'
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: _none
+      features:
+        add_above: '0'
+        collapse_edit_all: collapse_edit_all
+        duplicate: duplicate
+    third_party_settings: {  }
+    region: content
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: 'project name...'
+    third_party_settings: {  }
+hidden:
+  created: true
+  path: true
+  promote: true
+  status: true
+  sticky: true
+  uid: true

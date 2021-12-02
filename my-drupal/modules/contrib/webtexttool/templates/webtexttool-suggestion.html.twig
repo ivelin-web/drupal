@@ -1,0 +1,59 @@
+<div id="{{ html_id }}" class="{{ classes_array }} wtt-sectionparent active" {{ attributes }}>
+    <label class="wtt-label">
+        {{ heading }}
+    </label>
+    <div class="wtt-section">
+        <div class="bar {{ complete_class }}">
+            <div class="percentage" style="width: {{ complete }}%;"></div>
+        </div>
+        <div data-javascript-positioning-placeholder="{{ suggestion['Tag']|clean_class }}-settings"></div>
+        {% if children %}
+            {{ children }}
+        {% endif %}
+        <span class="rules">
+            {% for rule in rules %}
+                {% if rule['Checked'] and rule['Checked'] == TRUE %}
+                    <li class="rule rule-checked">
+                {% else %}
+                    <li class="rule rule-unchecked">
+                {% endif %}
+                {% if rule['ExtraInfo']['List'] %}
+                    <input class="rule-toggle" type="checkbox" id="{{ rule['Rule'] }}">
+                {% endif %}
+                <label class="rule-label" for="{{ rule['Rule'] }}">
+                    {{ rule['Text']|raw }}
+                </label>
+                {% if rule['ExtraInfo']['Description'] %}
+                    <span class="description">{{ rule['ExtraInfo']['Description'] }}</span>
+
+                    <ul class="extra-info">
+                        {% if rule['ExtraInfo']['List'] %}
+                            {% for item in rule['ExtraInfo']['List'] %}
+                                <li class="info-item {% if item['type'] %}{{ item['type'] }}{% endif %}{% if item['to'] %}{{ ' has-suggestions' }}{% endif %}">
+                                {% if item['type'] %}
+                                    {#<span class="icon type-icon"><?php if (file_exists(drupal_get_path('module', 'webtexttool') . '/svg/' . $parts[1] . '.svg')): print file_get_contents(drupal_get_path('module', 'webtexttool') . '/svg/' . $parts[1] . '.svg'); ?><?php endif; ?></span>#}
+                                {% endif %}
+                                    {{ item['word'] }}
+                                    {% if item['count'] and item['count'] > 1 %}
+                                        <span class="count">{{ item['count'] }}</span>
+                                    {% endif %}
+                                    {% if item['to'] %}
+                                        <span class="icon has-suggestions-icon">{{ lightbulb_icon|raw }}</span>
+                                        <div class="word-suggestions">
+                                            <span class="label">Suggestions:</span>
+                                            <ul class="suggestions-list">
+                                                {% for to in item['to'] %}
+                                                    <li class="word-suggestion">{{ to['word'] }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                {% endif %}
+            {% endfor %}
+        </span>
+    </div>
+</div>

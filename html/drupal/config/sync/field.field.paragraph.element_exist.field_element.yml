@@ -1,0 +1,19 @@
+uuid: d0e3de0c-7375-4780-ae39-4e310af17cc3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_element
+    - paragraphs.paragraphs_type.element_exist
+id: paragraph.element_exist.field_element
+field_name: field_element
+entity_type: paragraph
+bundle: element_exist
+label: Element
+description: 'Assert element exist by query string.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

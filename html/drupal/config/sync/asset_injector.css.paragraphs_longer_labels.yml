@@ -1,0 +1,21 @@
+uuid: d28e6024-b6aa-4596-94c8-fb9b13a5c4ac
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: paragraphs_longer_labels
+label: 'Paragraphs Longer Labels'
+code: "@media (min-width: 992px) {\r\n  .js .paragraph-top {\r\n    grid-template-columns: 30% auto 1fr auto;\r\n  }\r\n}"
+conditions_require_all: true
+conditions:
+  node_type:
+    id: node_type
+    bundles:
+      project: project
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+contexts: {  }
+media: all
+preprocess: true

@@ -1,0 +1,23 @@
+uuid: 4081bd08-f763-4244-8f6a-417e1d2b55a0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.find.field_element
+    - paragraphs.paragraphs_type.find
+id: paragraph.find.default
+targetEntityType: paragraph
+bundle: find
+mode: default
+content:
+  field_element:
+    weight: 0
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+hidden:
+  created: true
+  status: true

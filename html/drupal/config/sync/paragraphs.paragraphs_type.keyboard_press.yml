@@ -1,0 +1,12 @@
+uuid: 712897c8-70c9-4448-88cd-6d13d55ec772
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:822bc3d8-d5f9-499b-aa2c-95559faa0af3'
+id: keyboard_press
+label: 'Keyboard Press'
+icon_uuid: 822bc3d8-d5f9-499b-aa2c-95559faa0af3
+icon_default: null
+description: 'Press down and up some button.'
+behavior_plugins: {  }

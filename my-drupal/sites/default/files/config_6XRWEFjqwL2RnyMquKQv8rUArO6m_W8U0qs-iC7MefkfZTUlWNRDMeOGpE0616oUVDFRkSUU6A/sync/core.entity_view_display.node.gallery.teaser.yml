@@ -1,0 +1,28 @@
+uuid: 597aa701-a5a3-40f8-ad5d-b86f7efb5a13
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.gallery.field_image
+    - node.type.gallery
+    - responsive_image.styles.narrow
+  module:
+    - responsive_image
+    - user
+id: node.gallery.teaser
+targetEntityType: node
+bundle: gallery
+mode: teaser
+content:
+  field_image:
+    type: responsive_image
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      responsive_image_style: narrow
+      image_link: content
+    third_party_settings: {  }
+hidden:
+  links: true

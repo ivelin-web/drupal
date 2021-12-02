@@ -1,0 +1,801 @@
+{
+	"info": {
+		"_postman_id": "7d1f5695-49ae-46a1-b16f-09a786dfe8fe",
+		"name": "Status Check App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"item": [
+						{
+							"name": "Login - happy path",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ba867af2-cc4a-4d2a-9637-52100d5cf175",
+										"exec": [
+											"const valid_jwt = JSON.parse(pm.variables.get(\"valid_jwt\"));",
+											"",
+											"pm.test(\"login - happy path\", function(){",
+											"    let json_data = pm.response.json();",
+											"    pm.expect(json_data).to.eql(valid_jwt);",
+											"});",
+											"",
+											"pm.test(\"Status is 202\", function(){",
+											"    pm.response.to.have.status(202);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"username\": \"{{valid_username}}\",\n\t\"password\": \"{{valid_password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://statuscheckapp.local/api/user/login",
+									"protocol": "http",
+									"host": [
+										"statuscheckapp",
+										"local"
+									],
+									"path": [
+										"api",
+										"user",
+										"login"
+									]
+								},
+								"description": "Login without jwt token"
+							},
+							"response": []
+						},
+						{
+							"name": "Login - with wrong token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ed092602-7afd-43bf-9203-4d3fb71d62e1",
+										"exec": [
+											"const valid_jwt = JSON.parse(pm.variables.get(\"valid_jwt\"));",
+											"",
+											"pm.test(\"login - happy path\", function(){",
+											"    let json_data = pm.response.json();",
+											"    pm.expect(json_data).to.eql(valid_jwt);",
+											"});",
+											"",
+											"pm.test(\"Status is 202\", function(){",
+											"    pm.response.to.have.status(202);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Cookie",
+										"value": "{{invalid_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"username\": \"{{valid_username}}\",\n\t\"password\": \"{{valid_password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://statuscheckapp.local/api/user/login",
+									"protocol": "http",
+									"host": [
+										"statuscheckapp",
+										"local"
+									],
+									"path": [
+										"api",
+										"user",
+										"login"
+									]
+								},
+								"description": "Try to login with wrong/invalid jwt."
+							},
+							"response": []
+						},
+						{
+							"name": "Login - with wrong username",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "830c7aa0-fe73-4b09-a287-f59321dbe017",
+										"exec": [
+											"pm.test(\"login - with wrong username\", function(){",
+											"    let json_data = pm.response.json();",
+											"    pm.expect(json_data).to.eql(\"Access denied!\");",
+											"});",
+											"",
+											"pm.test(\"Status is 403\", function(){",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"username\": \"{{invalid_username}}\",\n\t\"password\": \"{{valid_password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://statuscheckapp.local/api/user/login",
+									"protocol": "http",
+									"host": [
+										"statuscheckapp",
+										"local"
+									],
+									"path": [
+										"api",
+										"user",
+										"login"
+									]
+								},
+								"description": "Try to login with wrong username."
+							},
+							"response": []
+						},
+						{
+							"name": "Login - with wrong password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "a9bdd988-cc4c-423a-bd5e-676553d7c211",
+										"exec": [
+											"pm.test(\"login - with wrong password\", function(){",
+											"    let json_data = pm.response.json();",
+											"    pm.expect(json_data).to.eql(\"Access denied!\");",
+											"});",
+											"",
+											"pm.test(\"Status is 403\", function(){",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"username\": \"{{valid_username}}\",\n\t\"password\": \"{{invalid_password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://statuscheckapp.local/api/user/login",
+									"protocol": "http",
+									"host": [
+										"statuscheckapp",
+										"local"
+									],
+									"path": [
+										"api",
+										"user",
+										"login"
+									]
+								},
+								"description": "Try to login with wrong password."
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Register",
+					"item": [
+						{
+							"name": "Register - happy path",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8b87d61c-9dba-461d-8c45-7ae2105201a5",
+										"exec": [
+											"pm.test(\"Register - happy path - Status is 200\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "70a81b7b-203e-416a-a36c-9a29bda4b5a1",
+										"exec": [
+											"pm.globals.set(\"random_username\", _.random(100, 10000));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Cookie",
+										"value": "XDEBUG_SESSION=PHPSTORM",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"{{random_username}}\",\n    \"password\": \"{{valid_password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://statuscheckapp.local/api/user/register",
+									"protocol": "http",
+									"host": [
+										"statuscheckapp",
+										"local"
+									],
+									"path": [
+										"api",
+										"user",
+										"register"
+									]
+								},
+								"description": "Try to register with username and password."
+							},
+							"response": []
+						},
+						{
+							"name": "Register - with existing user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8b87d61c-9dba-461d-8c45-7ae2105201a5",
+										"exec": [
+											"pm.test(\"Register - with existings user\", function(){",
+											"    let json_data = pm.response.json();",
+											"    pm.expect(json_data).to.eql(\"User already exist!\");",
+											"});",
+											"",
+											"pm.test(\"Status is 409\", function(){",
+											"    pm.response.to.have.status(409);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "70a81b7b-203e-416a-a36c-9a29bda4b5a1",
+										"exec": [
+											"pm.globals.set(\"random_username\", _.random(100, 10000));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"{{valid_username}}\",\n    \"password\": \"{{valid_password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://statuscheckapp.local/api/user/register",
+									"protocol": "http",
+									"host": [
+										"statuscheckapp",
+										"local"
+									],
+									"path": [
+										"api",
+										"user",
+										"register"
+									]
+								},
+								"description": "Try to register with user, that already exists."
+							},
+							"response": []
+						},
+						{
+							"name": "Register - without username",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8b87d61c-9dba-461d-8c45-7ae2105201a5",
+										"exec": [
+											"pm.test(\"Register - without username\", function(){",
+											"    let json_data = pm.response.json();",
+											"    pm.expect(json_data).to.eql(\"Incorrect data!\");",
+											"});",
+											"",
+											"pm.test(\"Status is 403\", function(){",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"password\": \"{{valid_password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://statuscheckapp.local/api/user/register",
+									"protocol": "http",
+									"host": [
+										"statuscheckapp",
+										"local"
+									],
+									"path": [
+										"api",
+										"user",
+										"register"
+									]
+								},
+								"description": "Try to register without username."
+							},
+							"response": []
+						},
+						{
+							"name": "Register - without password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "004fab4f-c85e-41e4-ab25-3abc4a1f8000",
+										"exec": [
+											"pm.test(\"Register - without password\", function(){",
+											"    let json_data = pm.response.json();",
+											"    pm.expect(json_data).to.eql(\"Incorrect data!\");",
+											"});",
+											"",
+											"pm.test(\"Status is 403\", function(){",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"username\": \"{{valid_username}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://statuscheckapp.local/api/user/register",
+									"protocol": "http",
+									"host": [
+										"statuscheckapp",
+										"local"
+									],
+									"path": [
+										"api",
+										"user",
+										"register"
+									]
+								},
+								"description": "Try to register without password."
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "UserSettings",
+			"item": [
+				{
+					"name": "Get Settings",
+					"item": [
+						{
+							"name": "Settings Get - happy path (with settings)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ba867af2-cc4a-4d2a-9637-52100d5cf175",
+										"exec": [
+											"let settings = JSON.parse(pm.environment.get(\"example_settings\"));",
+											"",
+											"pm.test(\"Get empty settings - happy path\", function(){",
+											"    let json_data = pm.response.json();",
+											"    pm.expect(json_data).to.eql(settings);",
+											"});",
+											"",
+											"pm.test(\"Status is 200\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Cookie",
+										"type": "text",
+										"value": "{{valid_cookie}}; XDEBUG_SESSION=PHPSTORM"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://statuscheckapp.local/api/user/settings",
+									"protocol": "http",
+									"host": [
+										"statuscheckapp",
+										"local"
+									],
+									"path": [
+										"api",
+										"user",
+										"settings"
+									]
+								},
+								"description": "Get settings - happy path."
+							},
+							"response": []
+						},
+						{
+							"name": "Settings Get - without cookie.",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ba867af2-cc4a-4d2a-9637-52100d5cf175",
+										"exec": [
+											"let message = {\"message\":\"Authorization fail!\"};",
+											"",
+											"pm.test(\"Get empty settings - happy path\", function(){",
+											"    let json_data = pm.response.json();",
+											"    pm.expect(json_data).to.eql(message);",
+											"});",
+											"",
+											"pm.test(\"Status is 403\", function(){",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://statuscheckapp.local/api/user/settings",
+									"protocol": "http",
+									"host": [
+										"statuscheckapp",
+										"local"
+									],
+									"path": [
+										"api",
+										"user",
+										"settings"
+									]
+								},
+								"description": "Get settings - get error message, when request do not have correct cookie."
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Set Settings",
+					"item": [
+						{
+							"name": "Settings Set - happy path",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ba867af2-cc4a-4d2a-9637-52100d5cf175",
+										"exec": [
+											"pm.test(\"Status is 201\", function(){",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Cookie",
+										"value": "{{valid_cookie}}; XDEBUG_SESSION=PHPSTORM",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{{example_settings}}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://statuscheckapp.local/api/user/settings",
+									"protocol": "http",
+									"host": [
+										"statuscheckapp",
+										"local"
+									],
+									"path": [
+										"api",
+										"user",
+										"settings"
+									]
+								},
+								"description": "Set settings for the user."
+							},
+							"response": []
+						},
+						{
+							"name": "Settings Set - without cookie.",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ba867af2-cc4a-4d2a-9637-52100d5cf175",
+										"exec": [
+											"pm.test(\"Set settings - must fail without token\", function(){",
+											"    let json_data = pm.response.json();",
+											"    pm.expect(json_data).to.eql({\"message\":\"Authorization fail!\"});",
+											"});",
+											"",
+											"",
+											"pm.test(\"Status is 403\", function(){",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{{example_settings}}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://statuscheckapp.local/api/user/settings",
+									"protocol": "http",
+									"host": [
+										"statuscheckapp",
+										"local"
+									],
+									"path": [
+										"api",
+										"user",
+										"settings"
+									]
+								},
+								"description": "Set settings fail without token."
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "89103640-d904-483a-84f0-588046e43019",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "3d03ca78-758e-4dcc-aef4-98c2f879f5f2",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

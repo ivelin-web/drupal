@@ -1,0 +1,22 @@
+uuid: ecf50a6a-b0d7-44b1-be31-25a654137483
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: subscriber_pattern
+label: 'Subscriber Pattern'
+type: 'canonical_entities:node'
+pattern: '/subscriber/[node:nid]'
+selection_criteria:
+  cbf7879a-d580-4427-92ee-e94a67164840:
+    id: node_type
+    bundles:
+      subscriber: subscriber
+    negate: false
+    context_mapping:
+      node: node
+    uuid: cbf7879a-d580-4427-92ee-e94a67164840
+selection_logic: and
+weight: -5
+relationships: {  }

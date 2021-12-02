@@ -1,0 +1,28 @@
+uuid: 8ac51867-ebf3-4b15-b52b-adc2d34d24ad
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.subscriber.field_first_name
+    - field.field.node.subscriber.field_last_name
+    - field.field.node.subscriber.field_short_description
+    - field.field.node.subscriber.field_subsriber_email
+    - node.type.subscriber
+  module:
+    - user
+id: node.subscriber.teaser
+targetEntityType: node
+bundle: subscriber
+mode: teaser
+content:
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_first_name: true
+  field_last_name: true
+  field_short_description: true
+  field_subsriber_email: true

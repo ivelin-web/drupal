@@ -1,0 +1,50 @@
+uuid: d4cdc5f2-8e23-4dd2-bb7e-aa2da9be6650
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.gallery.field_image
+    - image.style.thumbnail
+    - node.type.gallery
+  module:
+    - image
+    - path
+id: node.gallery.default
+targetEntityType: node
+bundle: gallery
+mode: default
+content:
+  field_image:
+    weight: 1
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+    region: content
+  path:
+    type: path
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  sticky:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 2
+    region: content
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  promote: true
+  status: true
+  uid: true

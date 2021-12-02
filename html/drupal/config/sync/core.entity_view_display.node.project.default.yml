@@ -1,0 +1,26 @@
+uuid: def9debc-2cb2-4b09-801b-ae33a6440f7d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.project.field_environments
+    - node.type.project
+  module:
+    - entity_reference_revisions
+    - user
+id: node.project.default
+targetEntityType: node
+bundle: project
+mode: default
+content:
+  field_environments:
+    type: entity_reference_revisions_entity_view
+    weight: 1
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+hidden:
+  links: true

@@ -1,0 +1,39 @@
+uuid: d6a61ab4-be43-4ad3-bab4-4c385d82be09
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.check.field_actions
+    - field.field.paragraph.check.field_assertions
+    - field.field.paragraph.check.field_name
+    - paragraphs.paragraphs_type.check
+  module:
+    - paragraphs
+id: paragraph.check.default
+targetEntityType: paragraph
+bundle: check
+mode: default
+content:
+  field_actions:
+    type: paragraph_summary
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_assertions:
+    type: paragraph_summary
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_name:
+    weight: 2
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden: {  }

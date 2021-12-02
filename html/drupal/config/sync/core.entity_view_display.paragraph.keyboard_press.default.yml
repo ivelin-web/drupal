@@ -1,0 +1,20 @@
+uuid: 8077339b-940b-422c-b522-73a3230e5082
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.keyboard_press.field_button
+    - paragraphs.paragraphs_type.keyboard_press
+id: paragraph.keyboard_press.default
+targetEntityType: paragraph
+bundle: keyboard_press
+mode: default
+content:
+  field_button:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+hidden: {  }

@@ -1,0 +1,12 @@
+uuid: 0659633a-21ff-45a5-b8e6-3711065f5269
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:32d9f6cb-4fc8-4b8a-a255-af18ed5aa0af'
+id: mouse_right_click
+label: 'Mouse Right Click'
+icon_uuid: 32d9f6cb-4fc8-4b8a-a255-af18ed5aa0af
+icon_default: null
+description: 'Make a click with right button on the mouse.'
+behavior_plugins: {  }

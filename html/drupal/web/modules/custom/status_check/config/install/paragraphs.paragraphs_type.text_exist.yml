@@ -1,0 +1,11 @@
+uuid: 45efbc38-d3ff-4d85-9ddb-8c174283350b
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:ecf8f485-d2ea-41a5-9e5a-f9fcceb3771c'
+id: text_exist
+label: 'Text Exist'
+icon_uuid: ecf8f485-d2ea-41a5-9e5a-f9fcceb3771c
+description: 'Assert text exist.'
+behavior_plugins: {  }

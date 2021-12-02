@@ -1,0 +1,45 @@
+uuid: 41db7205-eacc-4114-bf85-0dc982a851c4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.environment.field_checks
+    - field.field.paragraph.environment.field_name
+    - paragraphs.paragraphs_type.environment
+  module:
+    - paragraphs
+id: paragraph.environment.default
+targetEntityType: paragraph
+bundle: environment
+mode: default
+content:
+  field_checks:
+    type: paragraphs
+    weight: 1
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: button
+      form_display_mode: default
+      default_paragraph_type: _none
+      features:
+        add_above: '0'
+        collapse_edit_all: collapse_edit_all
+        duplicate: duplicate
+    third_party_settings: {  }
+    region: content
+  field_name:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true

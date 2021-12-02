@@ -1,0 +1,31 @@
+uuid: edf92858-4833-457a-9229-5e7b78c9c6a6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.gallery.field_image
+    - node.type.gallery
+    - responsive_image.styles.wide
+  module:
+    - responsive_image
+    - user
+id: node.gallery.default
+targetEntityType: node
+bundle: gallery
+mode: default
+content:
+  field_image:
+    weight: 1
+    label: hidden
+    settings:
+      responsive_image_style: wide
+      image_link: ''
+    third_party_settings: {  }
+    type: responsive_image
+    region: content
+  links:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

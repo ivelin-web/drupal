@@ -1,0 +1,7 @@
+subscriber_form.subscriber_form:
+  path: 'subscribe-form'
+  defaults:
+    _form: '\Drupal\subscriber_form\Form\SubscriberForm'
+    _title: 'Subscriber Form'
+  requirements:
+    _permission: 'access content'

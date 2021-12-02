@@ -1,0 +1,23 @@
+uuid: ef430aff-cde0-43f7-8c7f-fd8c829aefd5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.keyboard_type.field_text
+    - paragraphs.paragraphs_type.keyboard_type
+id: paragraph.keyboard_type.default
+targetEntityType: paragraph
+bundle: keyboard_type
+mode: default
+content:
+  field_text:
+    weight: 0
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+hidden:
+  created: true
+  status: true

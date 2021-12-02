@@ -1,0 +1,20 @@
+uuid: 4570413d-5a2d-481b-95f4-66b0b535ced7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_greetings
+  module:
+    - user
+id: user.user.field_greetings
+field_name: field_greetings
+entity_type: user
+bundle: user
+label: greetings
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

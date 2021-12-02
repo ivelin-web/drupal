@@ -1,0 +1,47 @@
++===============================+
+Version 8.1.1
+21 Feb, 2020
++===============================+
+# Initial version
+
+
++===============================+
+Version 8.1.2
+08 March, 2020
++===============================+
+# Fixed all known bugs.
+
+
++===============================+
+Version 8.1.3
+11 March, 2020
++===============================+
+# Added option to upload slider background image.
+# Better display of slider in mobile devices.
+
+
++===============================+
+Version 8.1.4
+17 March, 2020
++===============================+
+# Fixed: Uploaded slider image not saved as permanent.
+
+
+
++===============================+
+Version 8.1.5
+05 July, 2020
++===============================+
+# Zuvi theme is now compatible on Drupal 8.x.x and Drupal 9.x.x
+# Added option to set header animated circle as border type or solid type.
+
+
++===============================+
+Version 8.1.6
+01 March, 2021
++===============================+
+# Added required css for field label.
+# Added sass files.
+# New grid and flex based layouts.
+# Added ption to sidebar on frontpage.
+# Moved "Custom CSS Codes" section under "Insert Codes" in theme settings.

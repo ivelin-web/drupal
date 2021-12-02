@@ -1,0 +1,21 @@
+uuid: 5fe713b0-885f-4809-baf0-7fb55d3c59e3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_long_text
+    - node.type.test_textmetrics
+  module:
+    - text
+id: node.test_textmetrics.field_long_text
+field_name: field_long_text
+entity_type: node
+bundle: test_textmetrics
+label: 'Long Text'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

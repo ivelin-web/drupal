@@ -1,0 +1,17 @@
+uuid: fe7d199f-a02a-4391-8788-9faf810bd069
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: Subscriber
+type: subscriber
+description: 'new subscriber'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false

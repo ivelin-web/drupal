@@ -1,0 +1,26 @@
+uuid: 87f32771-e610-4916-a061-2eb2dbb2fba9
+langcode: en
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.preview
+    - field.field.paragraph.environment.field_checks
+    - paragraphs.paragraphs_type.environment
+  module:
+    - entity_reference_revisions
+id: paragraph.environment.preview
+targetEntityType: paragraph
+bundle: environment
+mode: preview
+content:
+  field_checks:
+    type: entity_reference_revisions_entity_view
+    weight: 1
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_name: true

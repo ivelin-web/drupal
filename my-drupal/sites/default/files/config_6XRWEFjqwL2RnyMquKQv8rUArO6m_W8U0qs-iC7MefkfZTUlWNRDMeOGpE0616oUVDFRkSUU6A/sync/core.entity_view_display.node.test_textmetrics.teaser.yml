@@ -1,0 +1,36 @@
+uuid: 3d90ff36-fbf7-431c-a8a3-52a3e2be9404
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.test_textmetrics.body
+    - field.field.node.test_textmetrics.field_heading_text
+    - field.field.node.test_textmetrics.field_long_text
+    - field.field.node.test_textmetrics.field_text
+    - node.type.test_textmetrics
+  module:
+    - text
+    - user
+id: node.test_textmetrics.teaser
+targetEntityType: node
+bundle: test_textmetrics
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_heading_text: true
+  field_long_text: true
+  field_text: true

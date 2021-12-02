@@ -1,0 +1,23 @@
+uuid: a3f634a2-8775-4077-b257-96b2e5e7c85d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.keyboard_down.field_button
+    - paragraphs.paragraphs_type.keyboard_down
+id: paragraph.keyboard_down.default
+targetEntityType: paragraph
+bundle: keyboard_down
+mode: default
+content:
+  field_button:
+    weight: 0
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+hidden:
+  created: true
+  status: true

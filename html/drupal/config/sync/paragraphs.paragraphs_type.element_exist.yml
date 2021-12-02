@@ -1,0 +1,12 @@
+uuid: 04a8fb0e-8355-4f37-835a-0d39c4fa78a9
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:0012e047-473b-4044-99cf-dc7138bdba16'
+id: element_exist
+label: 'Element Exist'
+icon_uuid: 0012e047-473b-4044-99cf-dc7138bdba16
+icon_default: null
+description: 'Assert element exist by query string.'
+behavior_plugins: {  }

@@ -1,0 +1,23 @@
+uuid: 923a6c5a-ed9d-4a80-ab65-4c4627732380
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_y
+    - paragraphs.paragraphs_type.mouse_move
+id: paragraph.mouse_move.field_y
+field_name: field_y
+entity_type: paragraph
+bundle: mouse_move
+label: 'Y'
+description: 'Provide "y" coordinates for the mouse to move. If "y" = 200, mouse will move 200px from top to bottom.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

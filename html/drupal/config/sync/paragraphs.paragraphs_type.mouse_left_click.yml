@@ -1,0 +1,12 @@
+uuid: ab97710d-67bb-4ef0-9dde-76881149e16d
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:5e4284fb-824d-40fd-82c9-a72854d536cc'
+id: mouse_left_click
+label: 'Mouse Left Click'
+icon_uuid: 5e4284fb-824d-40fd-82c9-a72854d536cc
+icon_default: null
+description: 'Make a click with left button on the mouse.'
+behavior_plugins: {  }

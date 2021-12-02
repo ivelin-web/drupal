@@ -1,0 +1,21 @@
+uuid: 97833fcd-8014-4eb8-84d2-eefff71af382
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_text
+    - node.type.test_textmetrics
+  module:
+    - text
+id: node.test_textmetrics.field_text
+field_name: field_text
+entity_type: node
+bundle: test_textmetrics
+label: text
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text

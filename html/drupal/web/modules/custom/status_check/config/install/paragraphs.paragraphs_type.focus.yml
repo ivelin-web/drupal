@@ -1,0 +1,11 @@
+uuid: 1978c02b-e65e-4ef9-8dd7-535efb802a63
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:f2102274-f515-47a3-bd11-2bf216854431'
+id: focus
+label: Focus
+icon_uuid: f2102274-f515-47a3-bd11-2bf216854431
+description: 'Put selected element on focus.'
+behavior_plugins: {  }

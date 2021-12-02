@@ -1,0 +1,40 @@
+uuid: 5158a3cb-e294-4ee6-a57c-6993301d0d70
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_checks
+    - paragraphs.paragraphs_type.check
+    - paragraphs.paragraphs_type.environment
+  module:
+    - entity_reference_revisions
+id: paragraph.environment.field_checks
+field_name: field_checks
+entity_type: paragraph
+bundle: environment
+label: Checks
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      check: check
+    target_bundles_drag_drop:
+      check:
+        enabled: true
+        weight: 5
+      environment:
+        weight: 3
+        enabled: false
+      status_check:
+        weight: 4
+        enabled: false
+      text_exists_check:
+        weight: 6
+        enabled: false
+field_type: entity_reference_revisions

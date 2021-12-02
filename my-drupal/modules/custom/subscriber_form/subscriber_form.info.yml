@@ -1,0 +1,6 @@
+name: Subscriber Form
+description: Custom form for new subscribers
+type: module
+core_version_requirement: ^8 || ^9
+dependencies:
+  - drupal:advancedqueue

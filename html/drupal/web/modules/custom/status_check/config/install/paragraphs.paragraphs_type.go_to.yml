@@ -1,0 +1,11 @@
+uuid: 732372b6-2917-4dc6-85d8-7a85ab8b74e3
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:9dfd0b9a-8a38-42d2-a7f7-68772b5096c0'
+id: go_to
+label: 'Go To'
+icon_uuid: 9dfd0b9a-8a38-42d2-a7f7-68772b5096c0
+description: 'Go to url.'
+behavior_plugins: {  }

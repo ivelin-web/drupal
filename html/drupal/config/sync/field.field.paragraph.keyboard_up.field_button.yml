@@ -1,0 +1,19 @@
+uuid: a4155d7a-8b68-4bf6-8c6e-a1a23c33a630
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_button
+    - paragraphs.paragraphs_type.keyboard_up
+id: paragraph.keyboard_up.field_button
+field_name: field_button
+entity_type: paragraph
+bundle: keyboard_up
+label: Button
+description: 'Release some pressed button.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

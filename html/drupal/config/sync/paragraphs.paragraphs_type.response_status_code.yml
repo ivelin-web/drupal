@@ -1,0 +1,12 @@
+uuid: 80a6c840-dc0e-4847-b51a-2566f3e37904
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:fa8a369f-79c1-4e0b-b313-d57d30812419'
+id: response_status_code
+label: 'Response Status Code'
+icon_uuid: fa8a369f-79c1-4e0b-b313-d57d30812419
+icon_default: null
+description: 'Assert response status code is equal to given code.'
+behavior_plugins: {  }

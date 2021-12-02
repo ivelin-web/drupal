@@ -1,0 +1,11 @@
+services:
+  logger.subscriber_form:
+    class: \Drupal\subscriber_form\Logger\MyLog
+    tags:
+      - { name: logger }
+
+  event_user_login.subscriber_form:
+    class: \Drupal\subscriber_form\EventSubscriber\UserLoginSubscriber
+    tags:
+      - { name: 'event_subscriber' }
+

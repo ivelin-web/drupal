@@ -1,0 +1,111 @@
+uuid: 1da49d5e-49e7-4970-a6fc-b57aba66e4dd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_assertions
+    - paragraphs.paragraphs_type.check
+    - paragraphs.paragraphs_type.element_exist
+    - paragraphs.paragraphs_type.response_status_code
+    - paragraphs.paragraphs_type.response_status_text
+    - paragraphs.paragraphs_type.text_exist
+    - paragraphs.paragraphs_type.text_exist_regexp
+  module:
+    - entity_reference_revisions
+id: paragraph.check.field_assertions
+field_name: field_assertions
+entity_type: paragraph
+bundle: check
+label: Assertions
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      element_exist: element_exist
+      response_status_code: response_status_code
+      response_status_text: response_status_text
+      text_exist: text_exist
+      text_exist_regexp: text_exist_regexp
+    target_bundles_drag_drop:
+      check:
+        weight: 35
+        enabled: false
+      click:
+        weight: 27
+        enabled: false
+      element_exist:
+        enabled: true
+        weight: 37
+      environment:
+        weight: 37
+        enabled: false
+      find:
+        weight: 39
+        enabled: false
+      find_and_type:
+        weight: 31
+        enabled: false
+      focus:
+        weight: 32
+        enabled: false
+      go_to:
+        weight: 33
+        enabled: false
+      keyboard_down:
+        weight: 34
+        enabled: false
+      keyboard_press:
+        weight: 35
+        enabled: false
+      keyboard_type:
+        weight: 36
+        enabled: false
+      keyboard_up:
+        weight: 37
+        enabled: false
+      mouse_left_click:
+        weight: 38
+        enabled: false
+      mouse_left_down:
+        weight: 39
+        enabled: false
+      mouse_left_up:
+        weight: 40
+        enabled: false
+      mouse_move:
+        weight: 41
+        enabled: false
+      mouse_right_click:
+        weight: 42
+        enabled: false
+      mouse_right_down:
+        weight: 43
+        enabled: false
+      mouse_right_up:
+        weight: 44
+        enabled: false
+      response_status_code:
+        enabled: true
+        weight: 45
+      response_status_text:
+        enabled: true
+        weight: 46
+      scroll_click:
+        weight: 47
+        enabled: false
+      text_exist:
+        enabled: true
+        weight: 48
+      text_exist_regexp:
+        enabled: true
+        weight: 49
+      wait:
+        weight: 50
+        enabled: false
+field_type: entity_reference_revisions

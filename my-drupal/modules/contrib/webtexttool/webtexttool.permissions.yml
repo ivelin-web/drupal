@@ -1,0 +1,8 @@
+administer textmetrics:
+  title: 'Administer Textmetrics '
+  description: 'Configure Textmetrics.'
+  restrict access: TRUE
+
+use textmetrics:
+  title: 'Use Textmetrics'
+  description: 'Use the Textmetrics on edit forms.'

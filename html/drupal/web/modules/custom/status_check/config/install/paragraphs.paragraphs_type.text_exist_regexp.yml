@@ -1,0 +1,11 @@
+uuid: 6e7ef99f-c017-48c9-97cb-b38a4c39eadf
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:e40efd2c-dc79-4c12-8717-c51b6c69a29d'
+id: text_exist_regexp
+label: 'Text Exist (RegExp)'
+icon_uuid: e40efd2c-dc79-4c12-8717-c51b6c69a29d
+description: 'Assert text exist with regular expression.'
+behavior_plugins: {  }

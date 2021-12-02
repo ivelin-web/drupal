@@ -1,0 +1,5 @@
+services:
+  status_check.auth:
+    class: Drupal\status_check\Services\Auth
+  status_check.projects_manager:
+    class: Drupal\status_check\Services\ProjectsManager

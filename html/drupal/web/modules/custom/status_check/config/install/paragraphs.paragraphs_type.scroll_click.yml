@@ -1,0 +1,11 @@
+uuid: 6c489561-b426-4fb0-9630-4285213fb778
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:bb0f5b73-173a-42b4-bb9e-f301b7536948'
+id: scroll_click
+label: 'Scroll Click'
+icon_uuid: bb0f5b73-173a-42b4-bb9e-f301b7536948
+description: 'Make a click with the scroll of the mouse.'
+behavior_plugins: {  }

@@ -1,0 +1,11 @@
+uuid: be4bf74a-a5bc-4d7e-9d75-fa7528fc89e4
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:24763c68-910d-433c-b169-f2d88dcec8af'
+id: response_status_text
+label: 'Response Status Text'
+icon_uuid: 24763c68-910d-433c-b169-f2d88dcec8af
+description: 'Assert response status text is equal to given text.'
+behavior_plugins: {  }

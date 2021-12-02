@@ -1,0 +1,28 @@
+uuid: a8c2c915-0112-4454-8dfa-504f2246bb3c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.find_and_type.field_element
+    - field.field.paragraph.find_and_type.field_text
+    - paragraphs.paragraphs_type.find_and_type
+id: paragraph.find_and_type.default
+targetEntityType: paragraph
+bundle: find_and_type
+mode: default
+content:
+  field_element:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_text:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+hidden: {  }

@@ -1,0 +1,11 @@
+uuid: 947008e1-b599-40fb-9256-46a37d099429
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:1383b28a-3e75-4c0b-bcea-ac413e12ea02'
+id: check
+label: Check
+icon_uuid: 1383b28a-3e75-4c0b-bcea-ac413e12ea02
+description: ''
+behavior_plugins: {  }

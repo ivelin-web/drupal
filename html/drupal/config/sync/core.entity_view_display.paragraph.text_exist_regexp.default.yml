@@ -1,0 +1,20 @@
+uuid: 0852ae5b-336d-4683-a434-f533f5008a07
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.text_exist_regexp.field_text
+    - paragraphs.paragraphs_type.text_exist_regexp
+id: paragraph.text_exist_regexp.default
+targetEntityType: paragraph
+bundle: text_exist_regexp
+mode: default
+content:
+  field_text:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+hidden: {  }

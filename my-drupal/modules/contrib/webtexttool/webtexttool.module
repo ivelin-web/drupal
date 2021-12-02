@@ -1,0 +1,1015 @@
+<?php
+
+/**
+ * @file
+ * Contains webtexttool.module.
+ */
+
+use Drupal\Component\Render\FormattableMarkup;
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\HtmlCommand;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
+use Drupal\webtexttool\Controller\WebtexttoolController;
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * @param $form
+ * @param FormStateInterface $form_state
+ * @param $form_id
+ */
+function webtexttool_form_node_type_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  if (isset($form['type'])) {
+    $form['webtexttool'] = array(
+      '#type' => 'details',
+      '#title' => t('Textmetrics settings'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#group' => 'additional_settings',
+      '#attributes' => array(
+        'class' => array('webtexttool-node-type-settings-form'),
+      ),
+      '#attached' => array(
+        'library' => array('webtexttool/webtexttool_node_type'),
+      ),
+    );
+
+    $enabled = Drupal::state()->get('webtexttool_enabled_' . $form['type']['#default_value'], 0);
+    $form['webtexttool']['webtexttool_enabled'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Enabled'),
+      '#default_value' => $enabled,
+      '#description' => t('Enable textmetrics for this content type.'),
+    );
+
+    // Add our custom submit handler.
+    $form['actions']['submit']['#submit'][] = 'webtexttool_node_type_form_submit';
+  }
+}
+
+/**
+ * Custom submit handler for saving the webtexttool enabled state of a specific content type.
+ *
+ * @param $form
+ * @param $form_state
+ */
+function webtexttool_node_type_form_submit(&$form, $form_state) {
+
+  // Save the enabled state of the content type.
+  $values = $form_state->getValues();
+  if (isset($values['webtexttool_enabled']) && isset($values['type'])) {
+    Drupal::state()->set('webtexttool_enabled_' . $values['type'], $values["webtexttool_enabled"]);
+  }
+}
+
+/**
+ * Implements hook_form_node_form_alter().
+ *
+ * @param $form
+ * @param $form_state
+ * @param $form_id
+ * @return array|void
+ */
+function webtexttool_form_node_form_alter(&$form, $form_state, $form_id) {
+
+  // First get the node of the page/
+  $node = $form_state->getFormObject()->getEntity();
+
+  // If the user has permission and webtexttool is turned on for this content type, show the form.
+  if (Drupal::currentUser()->hasPermission('use textmetrics') && Drupal::state()->get('webtexttool_enabled_' . $node->getType(), 0) == 1) {
+
+    $webtexttool_controller = new WebtexttoolController();
+
+    // Add webtexttool css.
+    $form['#attached']['library'][] = 'webtexttool/webtexttool';
+    $form['#attached']['library'][] = 'jquery_ui_tabs/tabs';
+
+    $form_state->setRebuild(TRUE);
+
+    $form['webtexttool'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Webtexttool'),
+      '#open' => TRUE, // Controls the HTML5 'open' attribute. Defaults to FALSE.
+      '#attributes' => array(
+        'id' => 'webtexttool-analyse',
+        'class' => array('webtexttool-form'),
+      ),
+    );
+
+    $form['webtexttool']['logo'] = array(
+      '#markup' => '<a href="https://textmetrics.com" rel="external noopener" class="logo" target="_blank"><img src="' . base_path() . drupal_get_path('module', 'webtexttool') . '/img/tm_logo.png"></a>',
+    );
+
+    $can_login = FALSE;
+    $tempstore = Drupal::service('tempstore.private')->get('webtexttool');
+    $token = $tempstore->get('webtexttooltoken');
+    $token_expiration_date = $tempstore->get('webtexttooltoken_expires_on');
+
+    if (!$token || time() > $token_expiration_date) {
+      $login = $webtexttool_controller->webtexttoolLogin();
+      if ($login) {
+        $can_login = TRUE;
+      }
+    }
+    else {
+      $can_login = TRUE;
+    }
+
+    if (!$can_login) {
+      $form['webtexttool']['message'] = array(
+        '#type' => 'container',
+        '#attributes' => array(
+          'class' => array('info')
+        ),
+        'text' => array(
+          '#markup' => 'Unable to login with the credentials you filled in at <a href="/admin/config/services/webtexttool/settings">Textmetrics account form.</a>'
+        ),
+      );
+
+      return $form;
+    }
+    else {
+      $form['webtexttool']['tabs_wrapper'] = array(
+        '#type' => 'container',
+        '#attributes' => array(
+          'class' => array(),
+          'id' => 'webtexttool-tabs-wrapper'
+        ),
+        'list' => array(
+          '#theme' => 'item_list',
+          '#items' => array(),
+          '#attributes' => array(
+            'class' => array(),
+          )
+        )
+      );
+
+      $tab_info = array(
+        'seo' => t('SEO'),
+        'content_quality' => t('Content quality'),
+      );
+
+      foreach ($tab_info as $tab => $tab_label) {
+        $form['webtexttool']['tabs_wrapper'][$tab] = array(
+          '#type' => 'container',
+          '#attributes' => array(
+            'id' => 'webtexttool-' . $tab
+          )
+        );
+
+        $form['webtexttool']['tabs_wrapper'][$tab]['inner'] = array(
+          '#type' => 'container',
+          '#attributes' => array(
+            'id' => 'webtexttool-' . $tab . '-inner'
+          )
+        );
+
+        $form['webtexttool']['tabs_wrapper']['list']['#items'][$tab] = array(
+          '#markup' => '<a href="#webtexttool-' . $tab . '">' . $tab_label . '</a>'
+        );
+      }
+
+      $checked = '';
+      if (isset($node->webtexttool_ruleset) && $node->webtexttool_ruleset) {
+        $checked = 'checked="checked"';
+      }
+
+      $ruleset_options = Drupal::service('webtexttool.webtexttool_controller')->getRulesetOptions();
+      $form['webtexttool']['tabs_wrapper']['seo']['webtexttool_ruleset'] = array(
+        '#prefix' => '<div class="wtt-form-element wtt-form-element-ruleset"><input type="checkbox" ' . $checked . ' id="wtt-sug-label-webtexttool-ruleset"/><label for="wtt-sug-label-webtexttool-ruleset">' . t('Text type') . '</label>',
+        '#suffix' => '</div>',
+        '#type' => 'select',
+        '#weight' => -2,
+        '#options' => $ruleset_options,
+        '#default_value' => $node->webtexttool_ruleset ?? 1,
+        '#description' => t('Choose the type of the text.'),
+      );
+
+      $checked = '';
+      if (isset($node->webtexttool_synonyms) && $node->webtexttool_synonyms) {
+        $checked = 'checked="checked"';
+      }
+
+      $form['webtexttool']['tabs_wrapper']['seo']['webtexttool_synonyms'] = array(
+        '#prefix' => '<div class="wtt-form-element wtt-form-element-synonyms"><input type="checkbox" ' . $checked . ' id="wtt-sug-label-webtexttool-synonyms"/><label for="wtt-sug-label-webtexttool-synonyms">' . t('Synonyms') . '</label>',
+        '#suffix' => '</div>',
+        '#type' => 'textarea',
+        '#rows' => 3,
+        '#cols' => 6,
+        '#resizable' => FALSE,
+        '#weight' => -1,
+        '#default_value' => $node->webtexttool_synonyms ?? '',
+        '#description' => t('Optional: for multiple synonyms, put each synonym on a different line (max 20 synonyms).'),
+      );
+
+      $form['webtexttool']['tabs_wrapper']['seo']['inner']['keyword_warning'] =  array(
+        '#weight' => -1,
+        '#type' => 'hidden',
+        '#attributes' => array(
+          'class' => array('info')
+        ),
+        'text' => array(
+          '#markup' => ''
+        ),
+      );
+
+      $form['webtexttool']['tabs_wrapper']['seo']['inner']['analyse_seo'] = array(
+        '#type' => 'button',
+        '#value' => t('Analyse my page'),
+        '#attributes' => array('class' => array('wtt-start-optimizing-seo')),
+        '#ajax' => array(
+          'callback' => 'webtexttool_analyse_seo_form_node_callback',
+          'wrapper' => 'webtexttool-seo-inner',
+          'event' => 'click',
+          'method' => 'replace',
+        ),
+        '#weight' => -2
+      );
+
+      $form['webtexttool']['tabs_wrapper']['content_quality']['inner']['analyse_content_quality'] = array(
+        '#type' => 'button',
+        '#value' => t('Analyse content quality'),
+        '#prefix' => '<div class="wtt-analyse-content-quality-wrapper">',
+        '#suffix' => '</div>',
+        '#ajax' => array(
+          'callback' => 'webtexttool_analyse_content_quality_form_node_callback',
+          'wrapper' => 'webtexttool-content_quality-inner',
+          'event' => 'click',
+          'method' => 'replace',
+        ),
+      );
+
+      $checked = '';
+      if (isset($node->webtexttool_keywords) && $node->webtexttool_keywords) {
+        $checked = 'checked="checked"';
+      }
+
+      $form['webtexttool']['tabs_wrapper']['seo']['inner']['stats'] = array(
+        '#type' => 'markup',
+        '#weight' => 2
+      );
+
+      $form['webtexttool']['tabs_wrapper']['seo']['webtexttool_keywords'] = array(
+        '#prefix' => '<div class="wtt-form-element wtt-form-element-keywords"><input type="checkbox" ' . $checked . ' id="wtt-sug-label-webtexttool-keywords"/><label for="wtt-sug-label-webtexttool-keywords">' . t('Keyword') . '</label>',
+        '#suffix' => '</div>',
+        '#type' => 'textfield',
+        '#weight' => -2,
+        '#default_value' => $node->webtexttool_keywords ?? '',
+        '#description' => t('Enter your focus keyword.'),
+        '#maxlength' => 512,
+      );
+
+      $form['webtexttool']['tabs_wrapper']['seo']['suggestions'] = array(
+        '#type' => 'container',
+      );
+
+      $form['webtexttool']['tabs_wrapper']['seo']['webtexttool_language'] = array(
+        '#prefix' => '<div class="wtt-form-element keyword-suggestion"><input type="checkbox" checked="checked" id="wtt-sug-label-webtexttool-language"/><label for="wtt-sug-label-webtexttool-language">' . t('Keyword suggestions language') . '</label>',
+        '#suffix' => '</div>',
+        '#type' => 'select',
+        '#options' => $webtexttool_controller->webtexttoolGetSources(),
+        '#description' => t('Based on the keyword we can lookup synonyms that can be added in the text to score even higher in search engines. This language will be used to lookup synonyms.'),
+        '#default_value' => $node->webtexttool_language ?? '',
+      );
+
+      $form['webtexttool']['tabs_wrapper']['seo']['get_keyword_suggestion'] = array(
+        '#type' => 'button',
+        '#value' => t('Get keyword suggestion'),
+        '#title' => t('Get keyword suggestion'),
+        '#ajax' => array(
+          'callback' => 'webtexttool_suggestion_form_node_callback',
+          'wrapper' => 'webtexttool-keyword-suggestion',
+          'effect' => 'fade',
+          'event' => 'click',
+        ),
+      );
+
+      $form['webtexttool']['tabs_wrapper']['seo']['keyword_container'] = array(
+        '#prefix' => '<div id="webtexttool-keyword-suggestion">',
+        '#suffix' => '</div>',
+      );
+    }
+
+    // Get a response the node. Either an earlier saved response or a dummy preset to build the form structure.
+    $response = $webtexttool_controller->getResponsePreset($node);
+
+    // Make sure the content quality settings are set on the node object.
+    $form_state_values = $form_state->getValues();
+    if (!isset($node->webtexttool_content_quality_settings)) {
+      $node->webtexttool_content_quality_settings = array();
+    }
+    else if (isset($form_state_values['toggle_Readability'])) {
+      $node->webtexttool_content_quality_settings = $webtexttool_controller->getUnifiedContentQualitySettings($form_state);
+    }
+
+    // Build the response form element.
+    $form['webtexttool']['tabs_wrapper']['content_quality']['inner']['response'] = array(
+      '#type' => 'hidden',
+      '#value' => json_encode($response),
+    );
+
+    if (is_array($response) && count($response)) {
+
+      if (isset($response['stats']) && !empty($response['stats'])) {
+        $markup = FALSE;
+
+        if (isset($response['page_score'])) {
+          $markup = '<div class="stat score"><strong>Total score: </strong><span>' . round($response['page_score']) . '%</span></div>' ;
+        }
+
+        foreach ($response['stats'] as $stat_label => $stat_value) {
+
+          if ($stat_value) {
+            if (!$markup) {
+              $markup = '<div class="stat"><strong>' . $stat_label . ':</strong><span>' . $stat_value . '</span></div>';
+            }
+            else {
+              $markup .= '<div class="stat"><strong>' . $stat_label . ':</strong><span>' . $stat_value . '</span></div>';
+            }
+          }
+        }
+
+        $form['webtexttool']['tabs_wrapper']['content_quality']['inner'][$stat_label] = array(
+          '#type' => 'markup',
+          '#markup' => $markup,
+          '#prefix' => '<div class="statistics">',
+          '#suffix' => '</div>'
+        );
+      }
+
+      if (isset($response['suggestions'])) {
+
+        $counter = 0;
+
+        foreach ($response['suggestions'] as $suggestion) {
+          $suggestion_name = $suggestion['Tag'];
+          $suggestion_name_lower = strtolower($suggestion_name);
+
+          $form['webtexttool']['tabs_wrapper']['content_quality']['inner']['webtexttool_content_quality_settings']['toggle_' . $suggestion_name] = array(
+            '#weight' => 10 + $counter,
+            '#type' => 'checkbox',
+            '#name' => 'toggle_' . $suggestion['Tag'],
+            '#prefix' => '<div class="wtt-toggle-switch">',
+            '#suffix' => '</div>',
+            '#attributes' => array('class' => array('wtt-toggle-form-item')),
+            '#title' => $suggestion_name,
+            '#default_value' => $node->webtexttool_content_quality_settings['toggle_' . $suggestion_name] ?? 1,
+          );
+
+          $counter++;
+
+          $setting = array();
+          $options = array();
+
+          // Build the options, depending on the advanced state of the account.
+          if (isset($suggestion['Metadata']['Settings'])) {
+            foreach ($suggestion['Metadata']['Settings'] as $setting_values) {
+              $options[$setting_values['Value']] = $setting_values['DisplayName'];
+            }
+
+            $default_value = NULL;
+            if (isset($suggestion['Metadata']['Rules'])) {
+              foreach ($suggestion['Metadata']['Rules'] as $rule) {
+                if ($rule['IsPrimary'] === true) {
+                  $default_value = $rule['Value'];
+                }
+              }
+            }
+
+            $setting[$suggestion_name_lower . '_setting'] = array(
+              '#type' => 'container',
+              '#attributes' => [
+                'data-javascript-positioning-selector' => strtolower(Html::cleanCssIdentifier($suggestion['Tag'] . '-settings')),
+              ],
+              $suggestion_name_lower . '_options' => [
+                '#type' => 'radios',
+                '#options' => $options,
+                '#default_value' => $node->webtexttool_content_quality_settings[$suggestion_name][$suggestion_name_lower . '_setting'][$suggestion_name_lower . '_options'] ?? $default_value,
+              ]
+            );
+          }
+
+          $setting['#weight'] = 11 + $counter;
+          $form['webtexttool']['tabs_wrapper']['content_quality']['inner']['webtexttool_content_quality_settings'][$suggestion_name . '_settings'] = $setting;
+
+          // Post-process the ExtraInfo object form json to an array.
+          $suggestion = $webtexttool_controller->postProcessExtraInfoObject($suggestion);
+
+          $form['webtexttool']['tabs_wrapper']['content_quality']['inner']['webtexttool_content_quality_settings'][$suggestion_name] = array(
+            '#weight' => 10 + $counter,
+            '#theme' => 'webtexttool_suggestion',
+            '#suggestion' => $suggestion,
+          );
+
+          $counter++;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Callback for the seo analyse.
+ *
+ * @param $form
+ * @param $form_state
+ * @return mixed
+ */
+function webtexttool_analyse_seo_form_node_callback($form, $form_state){
+
+  $entity = $form_state->getFormObject()->buildEntity($form, $form_state);
+  $values = $form_state->getValues();
+
+  $key_word = $values['webtexttool_keywords'];
+  $rule_set = $values['webtexttool_ruleset'];
+  $synonyms_value = $values['webtexttool_synonyms'];
+
+  if ($key_word == '') {
+    $form['webtexttool']['tabs_wrapper']['seo']['inner']['keyword_warning'] = array(
+      '#weight' => -1,
+      '#type' => 'container',
+      '#attributes' => array(
+        'class' => array('info')
+      ),
+      'text' => array(
+        '#markup' => t('Please, enter a keyword in the Textmetrics-tab to get started.')
+      ),
+    );
+
+    return $form['webtexttool']['tabs_wrapper']['seo']['inner'];
+  }
+  else {
+
+    // Unset the warning.
+    $form['webtexttool']['tabs_wrapper']['seo']['inner']['keyword_warning']['#type'] = 'hidden';
+
+    $settings = [];
+    foreach ($values as $key => $value) {
+
+      if (strpos($key, 'webtexttool_') !== FALSE) {
+        $settings[$key] = $value;
+      }
+    }
+
+    Drupal::service('webtexttool.webtexttool_controller')->saveWebtexttoolSettingsOfNode($entity, $settings);
+    $html = Drupal::service('webtexttool.webtexttool_controller')->constructCompleteMarkupOfPageWithNodeMarkup($entity, $form_state);
+
+    if ($html) {
+      $language = Drupal::state()->get('webtexttool.settings.language');
+      $synonyms = Drupal::service('webtexttool.webtexttool_controller')->seoGetSynonymsStructureForApiCall($synonyms_value);
+      $response = Drupal::service('webtexttool.webtexttool_controller')->webtexttoolAnalyseSeo($html, $key_word, $rule_set, $language, $synonyms);
+
+      if ($response) {
+
+        $markup = '';
+        if (isset($response['stats']['Page score'])) {
+          $markup .= '<div class="statistics"><div class="stat score"><strong>Total score: </strong><span>' . $response['stats']['Page score'] . '%</span></div>';
+        }
+
+        if (isset($response['stats']['Keyword count'])) {
+          $markup .= '<div class="stat"><strong>Keyword count: </strong><span>' . $response['stats']['Keyword count'] . '</span></div>';
+        }
+
+        if (isset($response['stats']['Word count'])) {
+          $markup .= '<div class="stat"><strong>Word count: </strong><span>' . $response['stats']['Word count'] . '</span></div></div>';
+        }
+
+        $form['webtexttool']['tabs_wrapper']['seo']['inner']['stats'] = array(
+          '#type' => 'markup',
+          '#markup' => $markup,
+        );
+
+        foreach ($response['suggestions'] as $suggestion) {
+          $form['webtexttool']['tabs_wrapper']['seo']['inner'][] = array(
+            '#theme' => 'webtexttool_suggestion',
+            '#suggestion' => $suggestion
+          );
+        }
+      }
+    }
+    else {
+      $form['webtexttool']['tabs_wrapper']['seo']['inner']['stats'][] = array(
+        '#type' => 'container',
+        '#attributes' => array(
+          'class' => array('info')
+        ),
+        '#markup' => t('Unable to load html of this node. Please check if an anonymous user can access a full rendered node of this type.')
+      );
+    }
+  }
+
+  return $form['webtexttool']['tabs_wrapper']['seo']['inner'];
+}
+
+/**
+ * AJAX callback for the webtexttool button.
+ *
+ * @param $form
+ * @param $form_state
+ * @return mixed
+ */
+function webtexttool_analyse_content_quality_form_node_callback($form, $form_state) {
+
+  // 'Fake' a node submit, so we can get the current node markup.
+  $node = $form_state->getFormObject()->buildEntity($form, $form_state);
+  $html = Drupal::service('webtexttool.webtexttool_controller')->constructCompleteMarkupOfPageWithNodeMarkup($node, $form_state);
+
+  $values = $form_state->getValues();;
+  $rule_set = $values['webtexttool_ruleset'];
+
+  if (isset($html) && $html) {
+    $language = Drupal::state()->get('webtexttool.settings.language');
+
+    if (!isset($node->webtexttool_content_quality_settings)) {
+      $node->webtexttool_content_quality_settings = array();
+    }
+    else {
+      $node->webtexttool_content_quality_settings = Drupal::service('webtexttool.webtexttool_controller')->getUnifiedContentQualitySettings($form_state);
+    }
+
+    // Inject the updated node into the form state.
+    $response = Drupal::service('webtexttool.webtexttool_controller')->analyseContentQuality($html, $rule_set, $node->webtexttool_content_quality_settings, $language);
+
+    $form['webtexttool']['tabs_wrapper']['content_quality']['inner']['response']['#value'] = json_encode($response);
+
+    if ($response) {
+
+      if (isset($response['stats'])) {
+
+        $markup = '';
+        if (isset($response['page_score'])) {
+          $markup = '<div class="stat score"><strong>Total score: </strong><span>' . round($response['page_score']) . '%</span></div>' ;
+        }
+
+        foreach ($response['stats'] as $stat_label => $stat_value) {
+          $markup .= '<div class="stat"><strong>' . $stat_label . ':</strong><span>' . $stat_value . '</span></div>';
+        }
+
+        $form['webtexttool']['tabs_wrapper']['content_quality']['inner'][$stat_label]['#markup'] = $markup;
+      }
+
+      $webtexttool_controller = new WebtexttoolController();
+
+      if (isset($response['suggestions'])) {
+        $counter = 0;
+
+        foreach ($response['suggestions'] as $suggestion) {
+          $suggestion_name = $suggestion['Tag'];
+          $suggestion_name_lower = strtolower($suggestion_name);
+          $suggestion_names[] = $suggestion_name;
+          $counter++;
+
+          if (!isset($form['webtexttool']['tabs_wrapper']['content_quality']['inner']['webtexttool_content_quality_settings']['toggle_' . $suggestion_name])) {
+            $form['webtexttool']['tabs_wrapper']['content_quality']['inner']['webtexttool_content_quality_settings']['toggle_' . $suggestion_name] = array(
+              '#weight' => 10 + $counter,
+              '#type' => 'checkbox',
+              '#name' => 'toggle_' . $suggestion['Tag'],
+              '#prefix' => '<div class="wtt-toggle-switch">',
+              '#suffix' => '</div>',
+              '#attributes' => array('class' => array('wtt-toggle-form-item')),
+              '#title' => $suggestion_name,
+              '#default_value' => $node->webtexttool_content_quality_settings['toggle_' . $suggestion_name] ?? 1,
+            );
+
+            $setting = array();
+            $options = array();
+
+            // Build the options, depending on the advanced state of the account.
+            if (isset($suggestion['Metadata']['Settings'])) {
+              foreach ($suggestion['Metadata']['Settings'] as $setting_values) {
+                $options[$setting_values['Value']] = $setting_values['DisplayName'];
+              }
+
+              $default_value = NULL;
+              if (isset($suggestion['Metadata']['Rules'])) {
+                foreach ($suggestion['Metadata']['Rules'] as $rule) {
+                  if ($rule['IsPrimary'] === true) {
+                    $default_value = $rule['Value'];
+                  }
+                }
+              }
+
+              $setting[$suggestion_name_lower . '_setting'] = array(
+                '#type' => 'container',
+                '#attributes' => [
+                  'data-javascript-positioning-selector' => strtolower(Html::cleanCssIdentifier($suggestion['Tag'] . '-settings')),
+                ],
+                $suggestion_name_lower . '_options' => [
+                  '#type' => 'radios',
+                  '#options' => $options,
+                  '#default_value' => $node->webtexttool_content_quality_settings[$suggestion_name][$suggestion_name_lower . '_setting'][$suggestion_name_lower . '_options'] ?? $default_value,
+                ]
+              );
+            }
+
+            $setting['#weight'] = 11 + $counter;
+            $form['webtexttool']['tabs_wrapper']['content_quality']['inner']['webtexttool_content_quality_settings'][$suggestion_name . '_settings'] = $setting;
+
+            // Post-process the ExtraInfo object form json to an array.
+            $suggestion = $webtexttool_controller->postProcessExtraInfoObject($suggestion);
+
+            $form['webtexttool']['tabs_wrapper']['content_quality']['inner']['webtexttool_content_quality_settings'][$suggestion_name] = array(
+              '#weight' => 10 + $counter,
+              '#theme' => 'webtexttool_suggestion',
+              '#suggestion' => $suggestion,
+            );
+          }
+
+          $counter++;
+        }
+
+        $suggestion_names = [];
+        foreach ($response['suggestions'] as $suggestion) {
+          $suggestion_name = $suggestion['Tag'];
+          $suggestion_name_lower = strtolower($suggestion_name);
+          $suggestion_names[] = $suggestion_name;
+
+          // Post-process the ExtraInfo object form json to an array.
+          $suggestion = Drupal::service('webtexttool.webtexttool_controller')->postProcessExtraInfoObject($suggestion);
+
+          // Update the switch
+          $form['webtexttool']['tabs_wrapper']['content_quality']['inner']['webtexttool_content_quality_settings']['toggle_' . $suggestion_name]['#default_value'] = $node->webtexttool_content_quality_settings['toggle_' . $suggestion_name] ?? 1;
+
+          // Update the suggestions.
+          $form['webtexttool']['tabs_wrapper']['content_quality']['inner']['webtexttool_content_quality_settings'][$suggestion_name]['#suggestion'] = $suggestion;
+
+          $setting = array();
+
+          $default_value = NULL;
+          if (isset($suggestion['Metadata']['Rules'])) {
+            foreach ($suggestion['Metadata']['Rules'] as $rule) {
+              if ($rule['IsPrimary'] === true) {
+                $default_value = $rule['Value'];
+                $setting[$suggestion_name_lower . '_setting'][$suggestion_name_lower . '_options']['#default_value'] = $node->webtexttool_content_quality_settings[$suggestion_name][$suggestion_name_lower . '_setting'][$suggestion_name_lower . '_options'] ?? $default_value;
+              }
+            }
+          }
+
+          $form['webtexttool']['tabs_wrapper']['content_quality']['inner']['webtexttool_content_quality_settings'][$suggestion_name . '_setting'] = $setting;
+        }
+
+        foreach (Element::children($form["webtexttool"]["tabs_wrapper"]["content_quality"]["inner"]["webtexttool_content_quality_settings"]) as $element) {
+          $element_shortened = str_replace(
+            [
+              'toggle_',
+              '_settings'
+            ],
+            '',
+            $element
+          );
+
+          if (!in_array($element_shortened, $suggestion_names)) {
+            unset($form["webtexttool"]["tabs_wrapper"]["content_quality"]["inner"]["webtexttool_content_quality_settings"][$element]);
+          }
+        }
+      }
+
+      // Save the response, so it can be loaded when the form is called another time.
+      Drupal::service('webtexttool.webtexttool_controller')->saveContentQualityResponse($node, $response);
+      Drupal::service('webtexttool.webtexttool_controller')->saveContentQualitySettings($node, $response);
+    }
+  }
+
+  // Return the updated content quality form structure.
+  return $form['webtexttool']['tabs_wrapper']['content_quality']['inner'];
+}
+
+/**
+ * Callback fot the keyword suggestion call.
+ *
+ * @param $form
+ * @param $form_state
+ * @return AjaxResponse
+ */
+function webtexttool_suggestion_form_node_callback(&$form, $form_state): AjaxResponse {
+
+  $values = $form_state->getValues();
+  $key_word = $values['webtexttool_keywords'];
+
+  $entity = $form_state->getFormObject()->getEntity();
+
+  $database = $values["webtexttool_language"];
+  $language = $entity->language() ? $entity->language()->getId() : Drupal::state()->get('webtexttool.settings.language');
+  $response = Drupal::service('webtexttool.webtexttool_controller')->webtexttoolSearchKeyword($key_word, $database, $language);
+
+  $header = array(
+    t("Keyword"),
+    t("Search volume"),
+    t("Competition"),
+    t("Overall"),
+  );
+
+  $rows = array();
+
+  if ($response && is_array($response)) {
+    foreach ($response as $suggested_keyword) {
+      $keyword = $suggested_keyword->Keyword;
+      $volumescore = (string) $suggested_keyword->VolumeScore;
+      $competitionscore = (string) $suggested_keyword->CompetitionScore;
+      $overallscore = (string) $suggested_keyword->OverallScore;
+      $volumeindicator = Drupal::service('webtexttool.webtexttool_controller')::colorIndicator(Drupal::service('webtexttool.webtexttool_controller')::scoreToClass($volumescore));
+      $competitionindicator = Drupal::service('webtexttool.webtexttool_controller')::colorIndicator(Drupal::service('webtexttool.webtexttool_controller')::scoreToClass($competitionscore));
+      $overallindicator  = Drupal::service('webtexttool.webtexttool_controller')::colorIndicator(Drupal::service('webtexttool.webtexttool_controller')::overallScoreToClass($overallscore));
+
+      $rows[] = array(
+        $keyword,
+        new FormattableMarkup($volumeindicator . Drupal::service('webtexttool.webtexttool_controller')::volumeScoreToText($volumescore), []),
+        new FormattableMarkup($competitionindicator . Drupal::service('webtexttool.webtexttool_controller')::competitionScoreToText($competitionscore), []),
+        new FormattableMarkup($overallindicator . Drupal::service('webtexttool.webtexttool_controller')::overallToText($overallscore), []),
+      );
+    }
+  }
+
+  $render = array(
+    '#theme' => 'table',
+    '#header' => $header,
+    '#rows' => $rows
+  );
+
+  $output = Drupal::service('renderer')->render($render);
+
+  $ajax_response = new AjaxResponse();
+
+  // Call the readMessage javascript function.
+  $ajax_response->addCommand(new HtmlCommand('#webtexttool-keyword-suggestion', $output));
+
+  // Return ajax response.
+  return $ajax_response;
+}
+
+/**
+ * Implements hook_theme().
+ *
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ * @return null[][][]
+ */
+function webtexttool_theme($existing, $type, $theme, $path): array {
+  return array(
+    'webtexttool_suggestion' => array(
+      'variables' => array(
+        'suggestion' => NULL,
+        'settings' => NULL,
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_ajax_render_alter().
+ *
+ * @param $commands
+ */
+function webtexttool_ajax_render_alter(&$commands) {
+  $webtexttool_found = FALSE;
+
+  foreach ($commands as $command) {
+    if (isset($command['data']) && substr($command['data'], 0, 29) == '<div id="webtexttool-analyse"') {
+      $webtexttool_found = TRUE;
+    }
+  }
+
+  if ($webtexttool_found) {
+    foreach ($commands as $delta => $command) {
+      if (isset($command['data']) && substr($command['data'], 0, 20) == '<div class="messages') {
+        unset($commands[$delta]);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_load().
+ *
+ * @param $entities
+ */
+function webtexttool_node_load($entities) {
+  if (Drupal::currentUser()->hasPermission('use textmetrics')) {
+    foreach ($entities as $node) {
+
+      if (Drupal::state()->get('webtexttool_enabled_' . $node->getType(), 0) == 1) {
+        $fields = [
+          'nid',
+          'vid',
+          'keywords',
+          'lang',
+          'content_quality_settings',
+          'content_quality_response',
+          'ruleset',
+          'synonyms'
+        ];
+
+        $result = Drupal::database()->select('webtexttool', 'wtt')
+          ->condition('nid', $node->id())
+          ->condition('vid', $node->getLoadedRevisionId())
+          ->fields('wtt', $fields)
+          ->execute()
+          ->fetchAll();
+
+        if (empty($result)) {
+          $result = Drupal::database()->select('webtexttool', 'wtt')
+            ->condition('nid', $node->id())
+            ->fields('wtt', $fields)
+            ->orderBy('vid', 'DESC')
+            ->range(0,1)
+            ->execute()
+            ->fetchAll();
+        }
+
+        foreach ($result as $record) {
+          if (isset($entities[$record->nid])) {
+            $entities[$record->nid]->webtexttool_keywords = $record->keywords;
+            $entities[$record->nid]->webtexttool_language = $record->lang;
+            $entities[$record->nid]->webtexttool_content_quality_settings = json_decode($record->content_quality_settings, TRUE);
+            $entities[$record->nid]->webtexttool_ruleset = $record->ruleset;
+            $entities[$record->nid]->webtexttool_synonyms = $record->synonyms;
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ *
+ * @param EntityInterface $entity
+ * @throws Exception
+ */
+function webtexttool_node_insert(EntityInterface $entity) {
+  $webtexttool_enabled = Drupal::state()->get('webtexttool_enabled_' . $entity->getType(), 0);
+  if (!$webtexttool_enabled) {
+    return;
+  }
+
+  // Only insert into database if we need to exclude the node.
+  if (Drupal::service('webtexttool.webtexttool_controller')->webtexttoolLogin()) {
+    $keywords = Drupal::request()->get("webtexttool_keywords") ?? '';
+    $language = Drupal::request()->get("webtexttool_language") ?? '';
+    $synonyms = Drupal::request()->get("webtexttool_synonyms") ?? '';
+    $ruleset = Drupal::request()->get("webtexttool_ruleset") ?? '';
+    $response = Drupal::request()->get('response') ?? '';
+    $vid = $entity->getLoadedRevisionId() ?? $entity->vid->value;
+
+    if ($keywords || $language || !empty($entity->webtexttool_content_quality_settings) || $synonyms || $response) {
+
+      Drupal::database()->insert('webtexttool')
+        ->fields(array(
+          'nid' => $entity->id(),
+          'vid' => $vid,
+          'keywords' => $keywords,
+          'lang' => $language,
+          'content_quality_settings' => isset($entity->webtexttool_content_quality_settings) ? json_encode($entity->webtexttool_content_quality_settings) : '',
+          'content_quality_response' => $response,
+          'ruleset' => $ruleset,
+          'synonyms' => $synonyms,
+        ))
+        ->execute();
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ *
+ * @param EntityInterface $entity
+ * @throws Exception
+ */
+function webtexttool_node_update(Drupal\Core\Entity\EntityInterface $entity) {
+  $webtexttool_enabled = Drupal::state()->get('webtexttool_enabled_' . $entity->getType(), 0);
+  if (!$webtexttool_enabled) {
+    return;
+  }
+
+  // Only insert into database if we need to exclude the node.
+  if (Drupal::service('webtexttool.webtexttool_controller')->webtexttoolLogin()) {
+
+    // If the user created a new revision will we insert a new record in the db.
+    // Else update database if we need to exclude the node.
+    // Otherwise, we delete the record from the database.
+    if (!$entity->isNew() && $entity->isNewRevision() && $entity->getLoadedRevisionId()) {
+      webtexttool_node_insert($entity);
+    }
+    else {
+      $keywords = Drupal::request()->get("webtexttool_keywords") ?? $entity->webtexttool_keywords;
+      $language = Drupal::request()->get("webtexttool_language") ?? $entity->webtexttool_language;
+      $synonyms = Drupal::request()->get("webtexttool_synonyms") ?? $entity->webtexttool_synonyms;
+      $ruleset = Drupal::request()->get("webtexttool_ruleset") ?? $entity->webtexttool_ruleset;
+      $response = Drupal::request()->get('response') ?? '';
+
+      if ($keywords || $language || !empty($entity->webtexttool_content_quality_settings) || $ruleset || $synonyms) {
+        Drupal::database()->merge('webtexttool')
+          ->key([
+              'nid' => $entity->id(),
+              'vid'=> $entity->getLoadedRevisionId()
+            ])
+          ->fields(array(
+            'keywords' => $keywords,
+            'lang' => $language,
+            'content_quality_settings' => isset($entity->webtexttool_content_quality_settings) ? json_encode($entity->webtexttool_content_quality_settings) : '',
+            'content_quality_response' => $response,
+            'ruleset' => $ruleset,
+            'synonyms' => $synonyms,
+          ))
+          ->execute();
+      }
+      else {
+        webtexttool_node_revision_delete($entity);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ *
+ * @param EntityInterface $entity
+ */
+function webtexttool_node_delete(EntityInterface $entity) {
+   Drupal::database()->delete('webtexttool')
+    ->condition('nid', $entity->id())
+    ->execute();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_revision_delete().
+ *
+ * @param EntityInterface $entity
+ */
+function webtexttool_node_revision_delete(Drupal\Core\Entity\EntityInterface $entity) {
+  Drupal::database()->delete('webtexttool')
+    ->condition('nid', $entity->id())
+    ->condition('vid', $entity->getLoadedRevisionId())
+    ->execute();
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * @param $variables
+ */
+function webtexttool_preprocess_webtexttool_suggestion(&$variables) {
+
+  $total_rules = 0;
+  $total_checked = 0;
+
+  if (isset($variables["suggestion"]) && is_array($variables['suggestion'])) {
+    $suggestion = $variables["suggestion"];
+    $variables['key'] = Html::getClass($suggestion["Tag"]);
+    $variables['unique_rule_id'] = Html::getUniqueId($suggestion["Tag"]);
+
+    $variables['tag'] = $suggestion["Tag"];
+
+    $variables['attributes']['class'] = ['suggestion'];
+    $variables['html_id'] = 'wtt-' . $suggestion['Tag'] . '-suggestion';
+
+    $variables['rules'] = $suggestion['Rules'];
+    $variables['lightbulb_icon'] = file_get_contents(drupal_get_path('module', 'webtexttool') . '/svg/lightbulb.svg');
+    $variables['heading'] = Drupal::service('webtexttool.webtexttool_controller')->webtexttoolHeading($suggestion["Tag"] . 'Label') ?? $suggestion["Tag"];
+  }
+  elseif (isset($variables['suggestion']) && !is_array($variables['suggestion'])) {
+    $suggestion = $variables["suggestion"];
+  }
+
+  if (isset($suggestion['Rules']) && is_array($suggestion['Rules'])) {
+    foreach ($suggestion['Rules'] as $rule) {
+      $total_rules++;
+
+      if (isset($rule['Checked']) && $rule['Checked']) {
+        $total_checked++;
+      }
+    }
+  }
+
+  $percentage = 0;
+  if ($total_checked > 0) {
+    $percentage = round(($total_checked / $total_rules) * 100);
+  }
+
+  $variables['complete'] = $percentage;
+  $variables['complete_class'] = 'score-none';
+
+  // Add a percentage class for the interface.
+  if ($percentage == 0) {
+    $variables['complete_class'] = 'score-none';
+  }
+  elseif ($percentage < 37) {
+    $variables['complete_class'] = 'score-low';
+  }
+  elseif ($percentage > 37 && $percentage < 67) {
+    $variables['complete_class'] = 'score-moderate';
+  }
+  elseif ($percentage > 67 && $percentage < 100) {
+    $variables['complete_class'] = 'score-high';
+  }
+  elseif ($percentage == 100) {
+    $variables['complete_class'] = 'score-complete';
+  }
+}
+

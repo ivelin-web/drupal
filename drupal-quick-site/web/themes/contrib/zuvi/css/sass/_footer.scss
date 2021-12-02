@@ -1,0 +1,143 @@
+/* Footer
+--------------------------------------*/
+.footer {
+  position: relative;
+  width: 100%;
+}
+#footer-top,
+#footer-blocks,
+#footer-bottom,
+#footer-bottom-last {
+  position: relative;
+  width: 100%;
+  padding-top: 30px;
+}
+/* Footer Top */
+#footer-top,
+#footer-bottom {
+  background: #181a25;
+  background: var(--content-bg);
+}
+/* Footer Four Blocks */
+#footer-blocks {
+  background: #020312;
+  background: var(--header-bg);
+}
+.footer-container {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin: 0;
+}
+#footer-bottom-last {
+  padding: 1.2em 0;
+}
+/* Footer Bottom */
+.footer-bottom-last {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin: 0;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.footer-bottom-last > * {
+  margin-bottom: 2em;
+}
+/* Footer copyright and social icons */
+#footer-bottom-last {
+  background: #181a25;
+  background: var(--content-bg);
+}
+.footer .block {
+  padding-bottom: 30px;
+}
+.footer-social-icons {
+  margin-left: auto;
+}
+.footer-container,
+.footer-bottom-last {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+.footer-block {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+      flex: 1;
+  padding: 0;
+}
+.last-flex-item,
+.last-footer-block {
+  padding-right: 0;
+}
+
+/* Footer -> Social icons. */
+ul.social-icons {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.social-icons li {
+  position: relative;
+  display: inline-block;
+  margin: 0 0 0.6em 0;
+  padding: 0;
+  border: 0;
+}
+ul.social-icons li a {
+  display: inline-block;
+  border-top: 3px solid #f26c4f;
+  border-left: 3px solid #f26c4f;
+  border-bottom: 3px solid #f4399e;
+  border-right: 3px solid #f4399e;
+  border-top: 3px solid var(--pink);
+  border-left: 3px solid var(--pink);
+  border-bottom: 3px solid var(--violet);
+  border-right: 3px solid var(--violet);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  line-height: 40px;
+  text-align: center;
+  color: #fff;
+  -webkit-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+}
+ul.social-icons li a:hover {
+  color: #f26c4f;
+  color: var(--pink);
+  border: 3px solid #fff;
+}
+/* Footer -> Scroll To Top. */
+.scrolltop {
+  position: fixed;
+  display: none;
+  right: 10px;
+  bottom: 10px;
+  width: 50px;
+  height: 50px;
+  line-height: 42px;
+  border-radius: 50%;
+  background: #f26c4f;
+  background: var(--pink-gradient);
+  color: #fff;
+  font-size: 20px;
+  z-index: 20;
+  cursor: pointer;
+  text-align: center;
+  padding: 4px;
+}
+.scrolltop-icon {
+  border-radius: 50%;
+  -webkit-transition: background 0.3s ease;
+  transition: background 0.3s ease;
+}
+.scrolltop:hover .scrolltop-icon {
+  background: #0d0f16;
+  background: var(--body-bg);
+}

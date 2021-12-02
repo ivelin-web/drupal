@@ -1,0 +1,19 @@
+uuid: 5407b479-6fed-47e7-82cf-47ab40629bfc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_time_for_humans
+    - paragraphs.paragraphs_type.wait
+id: paragraph.wait.field_time_for_humans
+field_name: field_time_for_humans
+entity_type: paragraph
+bundle: wait
+label: 'Time For Humans'
+description: 'Something like: "1 h 22 m 35 sec"'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

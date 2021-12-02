@@ -1,0 +1,12 @@
+uuid: 37653e54-434b-4683-8a1e-27850900fccd
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'file:file:76976cba-0758-41b5-9c9d-45aef50efd51'
+id: find_and_type
+label: 'Find And Type'
+icon_uuid: 76976cba-0758-41b5-9c9d-45aef50efd51
+icon_default: null
+description: 'Find element by query string, focus and type the given string inside him.'
+behavior_plugins: {  }
